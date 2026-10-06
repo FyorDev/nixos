@@ -35,7 +35,15 @@
       variant = "altgr-intl";
     };
     libinput.enable = true;
-    openssh.enable = true;
+    openssh = {
+      enable = true;
+      settings = {
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+        PermitRootLogin = "no";
+      };
+    };
+    udev.packages = [ pkgs.platformio-core.udev ];
     pipewire = {
       enable = true;
       pulse.enable = true;
@@ -49,7 +57,26 @@
     };
   };
 
-  programs.niri.enable = true;
+  programs = {
+    niri.enable = true;
+    virt-manager.enable = true;
+  };
+
+  virtualisation.libvirtd.enable = true;
+
+  users.users.fyor = {
+    isNormalUser = true;
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "dialout"
+      "video"
+      "audio"
+      "render"
+      "kvm"
+      "libvirtd"
+    ];
+  };
 
   environment.systemPackages = [
     pkgs.alacritty
