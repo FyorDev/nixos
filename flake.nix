@@ -2,14 +2,28 @@
   description = "A very basic flake";
 
   inputs = {
-    nixpkgs.url = "https://channels.nixos.org/nixpkgs-unstable/nixexprs.tar.zst";
+    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
   };
 
-  outputs = inputs: {
-    packages = builtins.mapAttrs (system: pkgs: {
-      inherit (pkgs) hello;
+  outputs =
+    inputs:
+    let
+      hosts = [
+        "asus"
+        "legion"
+      ];
 
-      default = inputs.self.packages.${system}.hello;
-    }) inputs.nixpkgs.legacyPackages;
-  };
+      mkHost =
+        name:
+        inputs.nixpkgs.lib.nixosSystem {
+          modules = [
+            ./modules/common.nix
+            ./hosts/${name}/configuration.nix
+            { networking.hostName = name; }
+          ];
+        };
+    in
+    {
+      nixosConfigurations = inputs.nixpkgs.lib.genAttrs hosts mkHost;
+    };
 }
