@@ -5,3 +5,5 @@
 flake.lock
 result
 result-*
+
+__pycache__/
