@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 {
   boot.loader = {
     systemd-boot = {
@@ -15,11 +15,6 @@
       "nix-command"
       "flakes"
     ];
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 14d";
-    };
     optimise.automatic = true;
   };
   nixpkgs.config.allowUnfree = true;
@@ -51,14 +46,29 @@
     greetd = {
       enable = true;
       settings.default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd niri-session";
+        command = builtins.concatStringsSep " " [
+          "${pkgs.cage}/bin/cage -s --"
+          "${pkgs.alacritty}/bin/alacritty"
+          "-e ${pkgs.tuigreet}/bin/tuigreet"
+          "--time"
+          "--user fyor"
+          "--remember"
+          "--asterisks"
+          "--greeting 'Welcome back'"
+          "--cmd niri-session"
+        ];
         user = "greeter";
       };
     };
   };
 
+  fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
+
   programs = {
-    niri.enable = true;
+    niri = {
+      enable = true;
+      package = inputs.niri.packages.${pkgs.stdenv.hostPlatform.system}.niri-unstable;
+    };
     virt-manager.enable = true;
   };
 
@@ -77,13 +87,6 @@
       "libvirtd"
     ];
   };
-
-  environment.systemPackages = [
-    pkgs.alacritty
-    pkgs.fuzzel
-    pkgs.git
-    pkgs.nautilus
-  ];
 
   system.stateVersion = "26.05";
 }
