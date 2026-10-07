@@ -32,6 +32,7 @@
             inputs.home-manager.nixosModules.home-manager
             ./modules/common.nix
             ./modules/home.nix
+            ./modules/shell.nix
             ./modules/packages.nix
             ./hosts/${name}/configuration.nix
             { networking.hostName = name; }

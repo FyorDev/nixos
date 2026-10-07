@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }:
+{ pkgs, ... }:
 let
   # icons are Nerd Font hex codes
   categories = with pkgs; [
@@ -6,27 +6,59 @@ let
       name = "System";
       icon = "f120";
       packages = [
-        alacritty
-        fuzzel
-        nautilus
+        # Apps
+        alacritty # terminal
+        nautilus # files
+        # Networking
+        wget # file downloading
+        # Images
+        imagemagick # image operations
+        exiftool # image metadata
+        # Search
+        fuzzel # launcher
+        ripgrep # fuzzy grep
+        fd # find
+        # Hardware
+        clinfo # OpenCL devices
+        smartmontools # disk health
+        # Shell
+        fish # shell
+        fzf # fuzzy finder
+        eza # ls replacement
+        zoxide # smarter cd
+        bat # cat with syntax highlight
+        htop # process viewer
+        btop
+        fastfetch
+        nix-your-shell # keep fish inside nix shell
+        fishPlugins.bobthefish # fish prompt
+        cava # audio visualiser
+        tealdeer # tldr pages
+        # Nix
+        nh # nix helper
       ];
     }
     {
       name = "Dev";
       icon = "f121";
       packages = [
-        git
-        gh
+        vim
+        neovim
         just
-        deadnix
+
+        git # Git
+        gh
+        git-cliff
+        git-lfs
+        difftastic
+        rumdl # Markdown
+        glow
+        shellcheck # Bash
+        shfmt
+        deadnix # Nix
         nixd
         nixfmt
         statix
-        git-cliff
-        git-lfs
-        rumdl
-        shellcheck
-        shfmt
       ];
     }
     {
@@ -57,7 +89,7 @@ let
     {
       name = "Browse";
       icon = "f059f";
-      packages = [ ];
+      packages = [ firefox ];
     }
     {
       name = "Game";
@@ -72,32 +104,17 @@ let
     {
       name = "Hardware";
       icon = "e266";
-      packages = [ ];
+      packages = [
+      ];
     }
     {
       name = "Util";
       icon = "f0214";
-      packages = [ ];
+      packages = [
+      ];
     }
   ];
 in
 {
-  imports = [ inputs.nix-index-database.nixosModules.default ];
-
   environment.systemPackages = builtins.concatMap (category: category.packages) categories;
-
-  programs = {
-    nh = {
-      enable = true;
-      flake = "path:/home/fyor/nixos";
-      clean = {
-        enable = true;
-        dates = "weekly";
-        extraArgs = "--keep 5 --keep-since 14d";
-      };
-    };
-    command-not-found.enable = false;
-    nix-index.enable = true;
-    nix-index-database.comma.enable = true;
-  };
 }

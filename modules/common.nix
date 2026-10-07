@@ -39,6 +39,7 @@
       };
     };
     udev.packages = [ pkgs.platformio-core.udev ];
+    hardware.openrgb.enable = true;
     pipewire = {
       enable = true;
       pulse.enable = true;
