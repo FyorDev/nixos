@@ -16,6 +16,7 @@ let
         exiftool # image metadata
         # Search
         fuzzel # launcher
+        xwayland-satellite # x11 apps under niri
         ripgrep # fuzzy grep
         fd # find
         # Hardware
