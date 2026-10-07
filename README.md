@@ -70,6 +70,11 @@ just release --dry v0.0.0 "title"
 just release v0.0.0 "title"
 ```
 
+## Shortcuts
+
+`fish`: Ctrl+N neovim  
+`fzf`: Ctrl+R history Ctrl+T filepath Alt+C directory
+
 Commits follow [Conventional Commits](https://www.conventionalcommits.org/)
 
 - Example: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `ci`, `build`, `revert`

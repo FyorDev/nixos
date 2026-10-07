@@ -1,8 +1,14 @@
-{ inputs, pkgs, ... }:
+{
+  config,
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
 let
   # systemd 261 deprecates niri-session calling import-environment without names
   niriSession = pkgs.writeShellScript "niri-session" ''
-    exec ${pkgs.niri}/bin/niri-session "$@" 2> >(${pkgs.gnugrep}/bin/grep -v 'import-environment without a list' >&2)
+    exec ${config.programs.niri.package}/bin/niri-session "$@" 2> >(${pkgs.gnugrep}/bin/grep -v 'import-environment without a list' >&2)
   '';
 in
 {
@@ -47,7 +53,12 @@ in
   time.timeZone = "Europe/Amsterdam";
   i18n.defaultLocale = "en_GB.UTF-8";
 
-  console.useXkbConfig = true;
+  console = {
+    useXkbConfig = true;
+    earlySetup = true;
+    packages = [ pkgs.terminus_font ];
+    font = lib.mkDefault "ter-v32n"; # Better for 4k
+  };
 
   services = {
     xserver.xkb = {
@@ -73,9 +84,7 @@ in
       enable = true;
       settings.default_session = {
         command = builtins.concatStringsSep " " [
-          "${pkgs.cage}/bin/cage -s --"
-          "${pkgs.alacritty}/bin/alacritty"
-          "-e ${pkgs.tuigreet}/bin/tuigreet"
+          "${pkgs.tuigreet}/bin/tuigreet"
           "--time"
           "--user fyor"
           "--remember"
