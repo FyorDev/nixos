@@ -66,13 +66,8 @@ Rebuild with `sudo nixos-rebuild switch --flake ~/nixos#<host>`.
 ## Release
 
 ```sh
-git cliff --unreleased --tag v0.0.0
-git add CHANGELOG.md
-git commit -m "chore(release): prepare for v0.0.0"
-git tag -s v0.0.0 -m "v0.0.0"
-git push origin main
-git push origin v0.0.0
-gh release create v0.0.0 -t "<release name>" -F ./CHANGELOG.md
+just release --dry v0.0.0 "title"
+just release v0.0.0 "title"
 ```
 
 Commits follow [Conventional Commits](https://www.conventionalcommits.org/)
