@@ -39,6 +39,12 @@
             ./modules/packages.nix
             ./hosts/${name}/configuration.nix
             { networking.hostName = name; }
+            {
+              options.hostLabel = inputs.nixpkgs.lib.mkOption {
+                type = inputs.nixpkgs.lib.types.str;
+                description = "Host label shown by fastfetch";
+              };
+            }
           ];
         };
     in

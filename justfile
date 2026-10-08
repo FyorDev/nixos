@@ -13,6 +13,12 @@ boot:
 build:
     nh os build path:.
 
+# Fetch, hard reset to upstream (discards local changes), then switch
+sync:
+    git fetch
+    git reset --hard @{u}
+    just switch
+
 # Update flake inputs
 update:
     nix flake update

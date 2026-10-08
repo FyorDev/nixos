@@ -47,34 +47,36 @@
     },
     {
       "type": "shell",
-      "key": " └ "
+      "key": " ├ "
     },
     {
       "type": "wm",
-      "key": "└ "
+      "key": " └ "
     },
     {
-      "type": "host",
-      "key": " PC"
+      "type": "custom",
+      "key": " PC",
+      "format": "@HOST_LABEL@"
     },
     {
-      "type": "cpu",
+      "type": "command",
       "key": " ├ ",
-      "format": "{name} (\u001b[38;2;250;179;135m{cores-logical}\u001b[38;2;205;214;244m) @ \u001b[38;2;250;179;135m{freq-max}\u001b[38;2;205;214;244m"
+      "text": "fastfetch -c none -s cpu --logo none --pipe | awk 'function rd(c, v) { c | getline v; close(c); return v } BEGIN { o = \"\\033[38;2;250;179;135m\"; r = \"\\033[38;2;205;214;244m\" } { sub(/^CPU: /, \"\"); f = rd(\"grep -lxE \\\"zenpower|k10temp|coretemp\\\" /sys/class/hwmon/*/name\"); sub(/name$/, \"temp1_input\", f); if (f != \"\") printf \"(%s%.1f\\302\\260C%s) \", o, rd(\"cat \" f) / 1000, r; if (match($0, /\\([0-9]+\\) @ [0-9.]+ GHz$/)) { c = substr($0, RSTART); $0 = substr($0, 1, RSTART - 1); sub(/\\(/, \"(\" o, c); sub(/\\)/, r \")\", c); sub(/@ /, \"@ \" o, c); $0 = $0 c r } print }'"
     },
     {
-      "type": "gpu",
-      "key": " ├󰹑 "
+      "type": "command",
+      "key": " ├󰹑 ",
+      "text": "fastfetch -c none -s gpu --logo none --pipe | awk -v i=1 'function rd(c, v) { c | getline v; close(c); return v } function temp(g, f) { if (g !~ /NVIDIA/) { f = rd(\"grep -lx amdgpu /sys/class/hwmon/*/name\"); sub(/name$/, \"temp1_input\", f); return f == \"\" ? \"\" : rd(\"cat \" f) / 1000 } f = rd(\"grep -lx legion_hwmon /sys/class/hwmon/*/name\"); if (f != \"\") { sub(/name$/, \"temp2_input\", f); return rd(\"cat \" f) / 1000 } if (rd(\"cat /sys/bus/pci/drivers/nvidia/0*/power/runtime_status\") ~ /^(active|unsupported)$/) return rd(\"nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader\"); return \"\" } sub(/^GPU( [0-9]+)?: /, \"\") && ++n == i { t = temp($0); if (t != \"\") printf \"(\\033[38;2;250;179;135m%.1f\\302\\260C\\033[38;2;205;214;244m) \", t; print }'"
     },
     {
-      "type": "memory",
+      "type": "command",
+      "key": " ├󰹑 ",
+      "text": "fastfetch -c none -s gpu --logo none --pipe | awk -v i=2 'function rd(c, v) { c | getline v; close(c); return v } function temp(g, f) { if (g !~ /NVIDIA/) { f = rd(\"grep -lx amdgpu /sys/class/hwmon/*/name\"); sub(/name$/, \"temp1_input\", f); return f == \"\" ? \"\" : rd(\"cat \" f) / 1000 } f = rd(\"grep -lx legion_hwmon /sys/class/hwmon/*/name\"); if (f != \"\") { sub(/name$/, \"temp2_input\", f); return rd(\"cat \" f) / 1000 } if (rd(\"cat /sys/bus/pci/drivers/nvidia/0*/power/runtime_status\") ~ /^(active|unsupported)$/) return rd(\"nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader\"); return \"\" } sub(/^GPU( [0-9]+)?: /, \"\") && ++n == i { t = temp($0); if (t != \"\") printf \"(\\033[38;2;250;179;135m%.1f\\302\\260C\\033[38;2;205;214;244m) \", t; print }'"
+    },
+    {
+      "type": "command",
       "key": " ├ ",
-      "format": "\u001b[38;2;250;179;135m{used}\u001b[38;2;205;214;244m / \u001b[38;2;250;179;135m{total}\u001b[38;2;205;214;244m (\u001b[38;2;250;179;135m{percentage}\u001b[38;2;205;214;244m)"
-    },
-    {
-      "type": "swap",
-      "key": " ├ ",
-      "format": "\u001b[38;2;250;179;135m{used}\u001b[38;2;205;214;244m / \u001b[38;2;250;179;135m{total}\u001b[38;2;205;214;244m (\u001b[38;2;250;179;135m{percentage}\u001b[38;2;205;214;244m)"
+      "text": "awk 'function f(u,t,  p){p=t?u*100/t:0;return sprintf(\"\\033[38;2;250;179;135m%.2f GiB\\033[38;2;205;214;244m / \\033[38;2;250;179;135m%.2f GiB\\033[38;2;205;214;244m (\\033[38;2;250;179;135m%.0f%%\\033[38;2;205;214;244m)\",u/1048576,t/1048576,p)} /^MemTotal/{t=$2} /^MemAvailable/{a=$2} /^SwapTotal/{st=$2} /^SwapFree/{sf=$2} END{print f(t-a,t) \" + \" f(st-sf,st)}' /proc/meminfo"
     },
     {
       "type": "disk",

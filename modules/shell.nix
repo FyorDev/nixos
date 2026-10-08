@@ -1,4 +1,9 @@
-{ inputs, pkgs, ... }:
+{
+  config,
+  inputs,
+  pkgs,
+  ...
+}:
 {
   imports = [ inputs.nix-index-database.nixosModules.default ];
 
@@ -119,7 +124,9 @@
     };
 
     xdg.configFile."fastfetch/config.jsonc".source = pkgs.runCommand "fastfetch-config.jsonc" { } ''
-      ${pkgs.gnused}/bin/sed 's|@LOGO@|${../config/fastfetch/logo.txt}|' \
+      ${pkgs.gnused}/bin/sed \
+        -e 's|@LOGO@|${../config/fastfetch/logo.txt}|' \
+        -e 's|@HOST_LABEL@|${config.hostLabel}|' \
         ${../config/fastfetch/config.jsonc} > $out
     '';
   };
