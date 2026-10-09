@@ -21,6 +21,7 @@
   outputs =
     inputs:
     let
+      inherit (inputs.nixpkgs.lib) mkOption types;
       hosts = [
         "asus"
         "legion"
@@ -41,9 +42,32 @@
             ./hosts/${name}/configuration.nix
             { networking.hostName = name; }
             {
-              options.hostLabel = inputs.nixpkgs.lib.mkOption {
-                type = inputs.nixpkgs.lib.types.str;
-                description = "Host label shown by fastfetch";
+              options = {
+                hostLabel = mkOption {
+                  type = types.str;
+                  description = "Host label shown by fastfetch";
+                };
+                user = {
+                  name = mkOption {
+                    type = types.str;
+                    description = "Your username";
+                  };
+                  git = {
+                    name = mkOption {
+                      type = types.str;
+                      description = "git user.name";
+                    };
+                    email = mkOption {
+                      type = types.str;
+                      description = "git user.email";
+                    };
+                    signingKey = mkOption {
+                      type = types.str;
+                      default = "~/.ssh/id_rsa.pub";
+                      description = "SSH public key for commit signing";
+                    };
+                  };
+                };
               };
             }
           ];

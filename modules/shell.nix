@@ -13,12 +13,12 @@
       nix-your-shell fish | source
     '';
   };
-  users.users.fyor.shell = pkgs.fish;
+  users.users.${config.user.name}.shell = pkgs.fish;
 
   programs = {
     nh = {
       enable = true;
-      flake = "path:/home/fyor/nixos";
+      flake = "path:${config.users.users.${config.user.name}.home}/nixos";
       clean = {
         enable = true;
         dates = "weekly";
@@ -84,7 +84,7 @@
     };
   };
 
-  home-manager.users.fyor = {
+  home-manager.users.${config.user.name} = {
     programs = {
       fish = {
         enable = true;
@@ -100,13 +100,13 @@
       git = {
         enable = true;
         signing = {
-          key = "~/.ssh/id_rsa.pub";
+          key = config.user.git.signingKey;
           format = "ssh";
           signByDefault = true;
         };
         settings.user = {
-          name = "FyorDev";
-          email = "uuf@fyor.nl";
+          name = config.user.git.name;
+          email = config.user.git.email;
         };
       };
 

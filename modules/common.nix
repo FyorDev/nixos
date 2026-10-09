@@ -92,7 +92,7 @@ in
         command = builtins.concatStringsSep " " [
           "${pkgs.tuigreet}/bin/tuigreet"
           "--time"
-          "--user fyor"
+          "--user ${config.user.name}"
           "--remember"
           "--asterisks"
           "--greeting 'Welcome back'"
@@ -124,7 +124,7 @@ in
 
   virtualisation.libvirtd.enable = true;
 
-  users.users.fyor = {
+  users.users.${config.user.name} = {
     isNormalUser = true;
     extraGroups = [
       "wheel" # sudo access

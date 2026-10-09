@@ -26,13 +26,13 @@ git add hosts/<host>/hardware-configuration.nix
 
 ```sh
 nixos-install --flake .#<host>
-nixos-enter --root /mnt -c 'passwd fyor'
-cp -r ../nixos /mnt/home/fyor/nixos
-nixos-enter --root /mnt -c 'chown -R fyor:users /home/fyor/nixos'
-mkdir -p /mnt/home/fyor/.ssh
-cp <private-key> <public-key> /mnt/home/fyor/.ssh/
-cat <public-key> >> /mnt/home/fyor/.ssh/authorized_keys
-nixos-enter --root /mnt -c 'chown -R fyor:users /home/fyor/.ssh && chmod 700 /home/fyor/.ssh && chmod 600 /home/fyor/.ssh/* && chmod 644 /home/fyor/.ssh/*.pub'
+nixos-enter --root /mnt -c 'passwd <user>'
+cp -r ../nixos /mnt/home/<user>/nixos
+nixos-enter --root /mnt -c 'chown -R <user>:users /home/<user>/nixos'
+mkdir -p /mnt/home/<user>/.ssh
+cp <private-key> <public-key> /mnt/home/<user>/.ssh/
+cat <public-key> >> /mnt/home/<user>/.ssh/authorized_keys
+nixos-enter --root /mnt -c 'chown -R <user>:users /home/<user>/.ssh && chmod 700 /home/<user>/.ssh && chmod 600 /home/<user>/.ssh/* && chmod 644 /home/<user>/.ssh/*.pub'
 reboot
 ```
 
