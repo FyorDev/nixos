@@ -16,6 +16,8 @@ let
         exiftool # image metadata
         # Search
         fuzzel # launcher
+        swaylock # lockscreen
+        swaybg # wallpaper
         xwayland-satellite # x11 apps under niri
         ripgrep # fuzzy grep
         fd # find
@@ -24,6 +26,8 @@ let
         smartmontools # disk health
         pciutils # lspci
         brightnessctl # backlight
+        bluez # bluetoothctl
+        appimage-run # run AppImages
         # Shell
         fish # shell
         fzf # fuzzy finder

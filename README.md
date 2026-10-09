@@ -38,6 +38,8 @@ reboot
 
 Rebuild with `just switch`, or force pull and rebuild with `just sync`.
 
+Add `background.png` or `background.jpg` to the root and rebuild.
+
 ## Release
 
 ```sh
