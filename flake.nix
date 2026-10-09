@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
     niri = {
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs"; # TODO: remove when niri-flake fixed

@@ -22,6 +22,7 @@ let
         # Hardware
         clinfo # OpenCL devices
         smartmontools # disk health
+        pciutils # lspci
         # Shell
         fish # shell
         fzf # fuzzy finder
