@@ -23,6 +23,7 @@ let
         clinfo # OpenCL devices
         smartmontools # disk health
         pciutils # lspci
+        brightnessctl # backlight
         # Shell
         fish # shell
         fzf # fuzzy finder

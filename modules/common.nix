@@ -74,7 +74,13 @@ in
         PermitRootLogin = "no";
       };
     };
-    udev.packages = [ pkgs.platformio-core.udev ];
+    udev.packages = [
+      pkgs.platformio-core.udev # non-root usb with dialout
+      pkgs.brightnessctl # brightness settings with video
+    ];
+    fwupd.enable = true; # firmware updates
+    gvfs.enable = true; # nautilus virtual fs for trash, mtp and network
+    udisks2.enable = true; # mounting
     hardware.openrgb.enable = true;
     pipewire = {
       enable = true;
@@ -105,21 +111,30 @@ in
       package = pkgs.niri-unstable;
     };
     virt-manager.enable = true;
+    nix-ld.enable = true; # allows prebuilt binaries (steam etc)
+    appimage = {
+      enable = true;
+      binfmt = true;
+    };
   };
+
+  security.rtkit.enable = true; # no audio stuttering
+
+  hardware.bluetooth.enable = true;
 
   virtualisation.libvirtd.enable = true;
 
   users.users.fyor = {
     isNormalUser = true;
     extraGroups = [
-      "wheel"
-      "networkmanager"
-      "dialout"
-      "video"
-      "audio"
-      "render"
-      "kvm"
-      "libvirtd"
+      "wheel" # sudo access
+      "networkmanager" # manage network connections without root
+      "dialout" # serial ports for microcontrollers
+      "video" # backlight and devices
+      "audio" # direct audio
+      "render" # GPU compute
+      "kvm" # hardware virtualisation
+      "libvirtd" # libvirt virtual machine management
     ];
   };
 

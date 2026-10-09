@@ -17,8 +17,8 @@
     powerManagement.finegrained = true; # power the dGPU down when idle
   };
 
-  # profile switching with powerprofilesctl, replaces the module's default tlp
-  services.power-profiles-daemon.enable = true;
+  services.upower.enable = true; # battery state
+  services.power-profiles-daemon.enable = true; # profile switching with powerprofilesctl
 
   # Needed for legion_cli
   boot.extraModulePackages = [ config.boot.kernelPackages.lenovo-legion-module ];
