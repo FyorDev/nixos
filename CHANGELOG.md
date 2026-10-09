@@ -1,3 +1,35 @@
+# [0.1.0] - 2026-10-09
+
+## Features
+
+### General
+
+- Add user fyor and config ssh `2026-10-06` | `e61387e`
+- Add packages.nix, niri-flake and home-manager `2026-10-07` | `b4b5149`
+- Configure fish and add shell.nix `2026-10-07` | `bda5838`
+- Fastfetch host label and print temp `2026-10-08` | `5a1c27f`
+- Set up asus legion graphics and legion dualgpu `2026-10-09` | `8ace079`
+- System services and device support `2026-10-09` | `0da5286`
+
+## Bug Fixes
+
+### General
+
+- Niri-unstable libdisplay-info, import-environment warning and x11 support `2026-10-07` | `923e205`
+- No alacritty login, ter-v32n 4k font, readme shortcuts, use right niri pkg `2026-10-07` | `e6c0768`
+
+## Documentation
+
+### General
+
+- Add NixOS usb install instructions `2026-10-06` | `f377812`
+
+## Miscellaneous Tasks
+
+### General
+
+- Add justfile with nh building and git-cliff releases `2026-10-07` | `d249dd9`
+
 ## [0.0.0] - 2026-10-06
 
 ### Features
