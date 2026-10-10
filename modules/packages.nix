@@ -1,5 +1,7 @@
 { pkgs, ... }:
 let
+  insomnium = pkgs.callPackage ../pkgs/insomnium.nix { };
+
   # icons are Nerd Font hex codes
   categories = with pkgs; [
     {
@@ -13,6 +15,12 @@ let
 
         fuzzel # launcher
         swaylock # lockscreen
+        swayidle # lock
+        waybar # top bar
+        mako # notifications
+        swayosd # volume and brightness popup
+        blueman # bluetooth applet
+        networkmanagerapplet # wifi applet
         swaybg # wallpaper
         playerctl # media keys
         hyprpicker # colour picker
@@ -183,7 +191,14 @@ let
     {
       name = "Hack";
       icon = "f0825";
-      packages = [ ];
+      packages = [
+        nmap # scan ports
+        burpsuite # sniff traffic
+        insomnium # test api
+        ghidra # decompiling
+        imhex # hex editor
+        wireshark # packet capture
+      ];
     }
     {
       name = "Hardware";

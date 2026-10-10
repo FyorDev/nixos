@@ -114,6 +114,10 @@ in
     };
     dconf.enable = true; # settings backend for GTK apps
     virt-manager.enable = true;
+    wireshark = {
+      enable = true;
+      package = pkgs.wireshark;
+    };
     nix-ld.enable = true; # allows prebuilt binaries (steam etc)
     appimage = {
       enable = true;
@@ -146,6 +150,7 @@ in
       "render" # GPU compute
       "kvm" # hardware virtualisation
       "libvirtd" # libvirt virtual machine management
+      "wireshark" # packet capture without root
     ];
   };
 
