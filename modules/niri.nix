@@ -1,7 +1,12 @@
 { config, ... }:
 {
   home-manager.users.${config.user.name} =
-    { config, lib, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     let
       inherit (lib) range nameValuePair concatMap;
       inherit (config.lib.niri) actions;
@@ -55,12 +60,35 @@
         ]) d.keys
       ) directions;
 
+      screenshot-ocr = pkgs.writeShellApplication {
+        name = "screenshot-ocr";
+        runtimeInputs = with pkgs; [
+          grim
+          slurp
+          tesseract
+          wl-clipboard
+          libnotify
+        ];
+        text = ''
+          area=$(slurp) || exit 0
+          text=$(grim -g "$area" - | tesseract - - -l eng 2>/dev/null)
+          if [ -z "''${text//[[:space:]]/}" ]; then
+            notify-send "OCR" "No text found in that area"
+            exit 0
+          fi
+          printf '%s' "$text" | wl-copy
+          notify-send "OCR" "Copied $(printf '%s' "$text" | wc -w) words to the clipboard"
+        '';
+      };
+
       numbered = concatMap (i: [
         (nameValuePair "Mod+${toString i}" { action.focus-workspace = i; })
         (nameValuePair "Mod+Ctrl+${toString i}" { action.move-column-to-workspace = i; })
       ]) (range 1 9);
     in
     {
+      home.packages = [ screenshot-ocr ];
+
       programs.niri.settings = {
         input = {
           keyboard = {
@@ -137,6 +165,14 @@
             "Mod+Shift+S" = {
               hotkey-overlay.title = "Annotate a Screenshot: swappy";
               action = spawn-sh "grim -g \"$(slurp)\" - | swappy -f -";
+            };
+            "Mod+Shift+Print" = {
+              hotkey-overlay.title = "Copy Text From Screen: tesseract";
+              action = spawn "screenshot-ocr";
+            };
+            "Mod+P" = {
+              hotkey-overlay.title = "Pick a Colour: hyprpicker";
+              action = spawn "hyprpicker" "--autocopy";
             };
             "Super+Alt+L" = {
               hotkey-overlay.title = "Lock the Screen: swaylock";

@@ -22,6 +22,9 @@
         fuzzel.enable = true;
         alacritty.enable = true;
         swaylock.enable = true;
+        mpv.enable = true;
+        zathura.enable = true;
+        imv.enable = true;
         firefox.enable = true;
         waybar = {
           enable = true;
@@ -33,6 +36,8 @@
         swayosd.enable = true;
         cliphist.enable = true;
         mako.enable = true;
+        blueman-applet.enable = true;
+        network-manager-applet.enable = true;
         swayidle = {
           enable = true;
           timeouts = [

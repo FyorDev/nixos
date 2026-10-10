@@ -49,6 +49,16 @@ just release v0.0.0 "title"
 
 ## Shortcuts
 
-`fish`: Ctrl+N neovim  
-`fzf`: Ctrl+R history Ctrl+T filepath Alt+C directory  
-`niri`: Mod+Y clipboard history Mod+Shift+S annotated screenshot
+| Where | Keys | Action |
+| --- | --- | --- |
+| fish | `Ctrl+N` | neovim |
+| fzf | `Ctrl+R` | history |
+| fzf | `Ctrl+T` | file path |
+| fzf | `Alt+C` | directory |
+| niri | `Mod+Y` | clipboard history |
+| niri | `Mod+P` | colour picker (copies hex) |
+| niri | `Print` | screenshot area |
+| niri | `Ctrl+Print` | screenshot screen |
+| niri | `Alt+Print` | screenshot window |
+| niri | `Mod+Shift+S` | annotate a screenshot |
+| niri | `Mod+Shift+Print` | copy text from screen (OCR) |

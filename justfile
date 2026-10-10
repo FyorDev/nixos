@@ -77,7 +77,7 @@ release version title="" dry="false":
         echo "git push origin $version"
         echo "$forge release create $version -t \"$label\" -F ./CHANGELOG.md"
     else
-        git cliff --tag "$version" -o CHANGELOG.md
+        git cliff --unreleased --tag "$version" -o CHANGELOG.md
         git add CHANGELOG.md
         git commit -m "chore(release): prepare for $version"
         git tag -s "$version" -m "$label"

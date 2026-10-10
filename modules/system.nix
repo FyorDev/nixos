@@ -81,7 +81,9 @@ in
     ];
     fwupd.enable = true; # firmware updates
     gvfs.enable = true; # nautilus virtual fs for trash, mtp and network
+    gnome.sushi.enable = true; # nautilus space preview
     udisks2.enable = true; # mounting
+    blueman.enable = true; # bluetooth applet
     gnome.gnome-keyring.enable = true; # secret storage for libsecret apps
     hardware.openrgb.enable = true;
     pipewire = {

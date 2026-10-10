@@ -8,49 +8,65 @@ let
       packages = [
         # Desktop
         niri-unstable # compositor
+        xwayland-satellite # x11 apps under niri
+        appimage-run # run AppImages
+
         fuzzel # launcher
         swaylock # lockscreen
         swaybg # wallpaper
+        playerctl # media keys
+        hyprpicker # colour picker
+        tesseract # ocr
+        libnotify # notify-send
+        nwg-displays # monitor layout gui
+        pavucontrol # volume mixer
+
         wl-clipboard # wl-copy and wl-paste
         cliphist # clipboard history
+
         grim # screenshots
         slurp # region selection
-        swappy # screenshot annotation
-        playerctl # media keys
-        xwayland-satellite # x11 apps under niri
-        appimage-run # run AppImages
+        swappy
+        # screenshot annotation
         # Networking
         wget # file downloading
+
         # Archives
         zip # zip creation
         unzip # zip extraction
         p7zip # 7z support
         unrar # rar extraction
+
         # Images
         imagemagick # image operations
         exiftool # image metadata
+
         # Search
         ripgrep # fuzzy grep
         fd # find
+
         # Hardware
         clinfo # OpenCL devices
         smartmontools # disk health
         pciutils # lspci
         brightnessctl # backlight
         bluez # bluetoothctl
+
         # Shell
         fish # shell
+        nix-your-shell # nix shell starts fish
+        fishPlugins.bobthefish # fish prompt
         fzf # fuzzy finder
         eza # ls replacement
         zoxide # smarter cd
+
+        fastfetch
         bat # cat with syntax highlight
         htop # process viewer
         btop
-        fastfetch
-        nix-your-shell # keep fish inside nix shell
-        fishPlugins.bobthefish # fish prompt
         cava # audio visualiser
         tealdeer # tldr pages
+
         # Nix
         nh # nix helper
         direnv # per-folder environments
@@ -65,25 +81,40 @@ let
       packages = [
         # Apps
         alacritty # terminal
+
         nautilus # files
+        ffmpegthumbnailer # video and audio cover thumbnails
+        glycin-thumbnailer # HEIF/AVIF, JPEG XL, SVG
+        glycin-loaders # loaders
+        webp-pixbuf-loader # webp
+        gnome-epub-thumbnailer # epub
+
         file-roller # archive manager
-        virt-manager # virtual machines
-        openrgb # rgb lighting
+        gnome-disk-utility # disks, smart and disk images
         baobab # disk usage analyzer
         gparted # partition editor
-        gnome-disk-utility # disks, smart and disk images
-        gnome-text-editor # text editor
         impression # usb flasher
+
+        gnome-text-editor # text editor
         gnome-decoder # qr scanner and generator
         hieroglyphic # latex symbol finder
+
+        virt-manager # virtual machines
+        openrgb # rgb lighting
+
         # Media
         imv # image viewer
         loupe # gnome image viewer
+
         mpv # video player
         showtime # gnome video player
+
         decibels # gnome audio player
+
         zathura # minimal document viewer
         papers # gnome document viewer
+        qbittorrent # torrents
+        kdePackages.kdenlive # video editor
       ];
     }
     {
@@ -99,6 +130,7 @@ let
         git-cliff
         git-lfs
         difftastic
+
         rumdl # Markdown
         glow
         shellcheck # Bash
