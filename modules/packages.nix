@@ -6,18 +6,22 @@ let
       name = "System";
       icon = "f120";
       packages = [
+        # Desktop
+        niri-unstable # compositor
+        appimage-run # run AppImages
+        fuzzel # launcher
+        swaylock # lockscreen
+        swaybg # wallpaper
         # Apps
         alacritty # terminal
         nautilus # files
+        virt-manager # virtual machines
         # Networking
         wget # file downloading
         # Images
         imagemagick # image operations
         exiftool # image metadata
         # Search
-        fuzzel # launcher
-        swaylock # lockscreen
-        swaybg # wallpaper
         xwayland-satellite # x11 apps under niri
         ripgrep # fuzzy grep
         fd # find
@@ -27,7 +31,7 @@ let
         pciutils # lspci
         brightnessctl # backlight
         bluez # bluetoothctl
-        appimage-run # run AppImages
+        openrgb # rgb lighting
         # Shell
         fish # shell
         fzf # fuzzy finder
@@ -43,6 +47,10 @@ let
         tealdeer # tldr pages
         # Nix
         nh # nix helper
+        direnv # per-folder environments
+        nix-direnv # fast direnv for nix
+        nix-index # file search for nixpkgs
+        comma # run any package with ,
       ];
     }
     {
