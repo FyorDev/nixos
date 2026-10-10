@@ -120,6 +120,19 @@
       };
     };
 
+    # Rust shared target dir
+    home.file.".cargo/config.toml".text = ''
+      [build]
+      target-dir = "${config.users.users.${config.user.name}.home}/.cache/cargo/target"
+      rustc-wrapper = "${pkgs.sccache}/bin/sccache"
+      incremental = false
+
+      [target.x86_64-unknown-linux-gnu]
+      linker = "${pkgs.clang}/bin/clang"
+      rustflags = ["-C", "link-arg=-fuse-ld=${pkgs.mold}/bin/mold"]
+    '';
+    home.sessionVariables.SCCACHE_CACHE_SIZE = "20G";
+
     xdg.configFile."fastfetch/config.jsonc".source = pkgs.runCommand "fastfetch-config.jsonc" { } ''
       ${pkgs.gnused}/bin/sed \
         -e 's|@LOGO@|${../config/fastfetch/logo.txt}|' \

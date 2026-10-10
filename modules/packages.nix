@@ -1,6 +1,7 @@
 { pkgs, ... }:
 let
   insomnium = pkgs.callPackage ../pkgs/insomnium.nix { };
+  claude-desktop = pkgs.callPackage ../pkgs/claude-desktop.nix { };
 
   # icons are Nerd Font hex codes
   categories = with pkgs; [
@@ -49,6 +50,8 @@ let
         # Images
         imagemagick # image operations
         exiftool # image metadata
+        # Video
+        ffmpeg # video and audio conversion
 
         # Search
         ripgrep # fuzzy grep
@@ -130,14 +133,19 @@ let
       packages = [
         vim
         neovim
+        vscode
         just
+        tokei # lines of code per language
+        tree-sitter # neovim parser builds
+        claude-code
+        claude-desktop
+        github-copilot-cli
 
         git # Git
         gh
         git-cliff
         git-lfs
         difftastic
-
         rumdl # Markdown
         glow
         shellcheck # Bash
@@ -146,6 +154,22 @@ let
         nixd
         nixfmt
         statix
+        rustup # Rust
+        rust-analyzer
+        sccache # shared compiler cache
+        mold # fast linker
+        gcc # C and C++
+        clang
+        clang-tools # clangd, clang-format, clang-tidy
+        cppcheck
+        gnumake
+        dotnetCorePackages.sdk_10_0 # C#, includes the runtime
+        nodejs # Javascript/Typescript
+        python3 # Python
+        python3Packages.pip
+        gdtoolkit_4 # GDScript lint and format
+        qmk # keyboard firmware
+        faust # audio DSP language
       ];
     }
     {
@@ -193,6 +217,7 @@ let
       icon = "f0825";
       packages = [
         nmap # scan ports
+        xh # http client
         burpsuite # sniff traffic
         insomnium # test api
         ghidra # decompiling
