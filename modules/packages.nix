@@ -238,6 +238,9 @@ let
       packages = [
         firefox
         chromium
+        signal-desktop
+        vesktop # discord
+        zapzap # whatsapp
         spotify
         qbittorrent
       ];
