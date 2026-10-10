@@ -2,6 +2,7 @@
 {
   config,
   inputs,
+  pkgs,
   ...
 }:
 {
@@ -22,6 +23,25 @@
         alacritty.enable = true;
         swaylock.enable = true;
         firefox.enable = true;
+        waybar = {
+          enable = true;
+          systemd.enable = true;
+        };
+      };
+
+      services = {
+        swayosd.enable = true;
+        cliphist.enable = true;
+        mako.enable = true;
+        swayidle = {
+          enable = true;
+          timeouts = [
+            {
+              timeout = 900;
+              command = "${pkgs.swaylock}/bin/swaylock -f";
+            }
+          ];
+        };
       };
     };
   };

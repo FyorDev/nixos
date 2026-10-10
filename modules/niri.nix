@@ -130,6 +130,14 @@
               hotkey-overlay.title = "Run an Application: fuzzel";
               action = spawn "fuzzel";
             };
+            "Mod+Y" = {
+              hotkey-overlay.title = "Clipboard History: cliphist";
+              action = spawn-sh "cliphist list | fuzzel --dmenu | cliphist decode | wl-copy";
+            };
+            "Mod+Shift+S" = {
+              hotkey-overlay.title = "Annotate a Screenshot: swappy";
+              action = spawn-sh "grim -g \"$(slurp)\" - | swappy -f -";
+            };
             "Super+Alt+L" = {
               hotkey-overlay.title = "Lock the Screen: swaylock";
               action = spawn "swaylock";
@@ -142,19 +150,19 @@
 
             "XF86AudioRaiseVolume" = {
               allow-when-locked = true;
-              action = spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0";
+              action = spawn "swayosd-client" "--output-volume" "raise";
             };
             "XF86AudioLowerVolume" = {
               allow-when-locked = true;
-              action = spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-";
+              action = spawn "swayosd-client" "--output-volume" "lower";
             };
             "XF86AudioMute" = {
               allow-when-locked = true;
-              action = spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+              action = spawn "swayosd-client" "--output-volume" "mute-toggle";
             };
             "XF86AudioMicMute" = {
               allow-when-locked = true;
-              action = spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
+              action = spawn "swayosd-client" "--input-volume" "mute-toggle";
             };
             "XF86AudioPlay" = {
               allow-when-locked = true;
@@ -178,11 +186,11 @@
             };
             "XF86MonBrightnessUp" = {
               allow-when-locked = true;
-              action = spawn "brightnessctl" "--class=backlight" "set" "+10%";
+              action = spawn "swayosd-client" "--brightness" "raise";
             };
             "XF86MonBrightnessDown" = {
               allow-when-locked = true;
-              action = spawn "brightnessctl" "--class=backlight" "set" "10%-";
+              action = spawn "swayosd-client" "--brightness" "lower";
             };
 
             "Mod+O" = {

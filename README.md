@@ -50,4 +50,5 @@ just release v0.0.0 "title"
 ## Shortcuts
 
 `fish`: Ctrl+N neovim  
-`fzf`: Ctrl+R history Ctrl+T filepath Alt+C directory
+`fzf`: Ctrl+R history Ctrl+T filepath Alt+C directory  
+`niri`: Mod+Y clipboard history Mod+Shift+S annotated screenshot

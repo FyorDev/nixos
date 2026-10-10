@@ -109,6 +109,7 @@ in
       enable = true;
       package = pkgs.niri-unstable;
     };
+    dconf.enable = true; # settings backend for GTK apps
     virt-manager.enable = true;
     nix-ld.enable = true; # allows prebuilt binaries (steam etc)
     appimage = {

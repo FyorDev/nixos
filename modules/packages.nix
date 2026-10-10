@@ -12,6 +12,12 @@ let
         fuzzel # launcher
         swaylock # lockscreen
         swaybg # wallpaper
+        wl-clipboard # wl-copy and wl-paste
+        cliphist # clipboard history
+        grim # screenshots
+        slurp # region selection
+        swappy # screenshot annotation
+        playerctl # media keys
         # Apps
         alacritty # terminal
         nautilus # files
