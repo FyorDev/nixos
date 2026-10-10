@@ -21,9 +21,15 @@ let
         # Apps
         alacritty # terminal
         nautilus # files
+        file-roller # archive manager
         virt-manager # virtual machines
         # Networking
         wget # file downloading
+        # Archives
+        zip # zip creation
+        unzip # zip extraction
+        p7zip # 7z support
+        unrar # rar extraction
         # Images
         imagemagick # image operations
         exiftool # image metadata
