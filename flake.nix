@@ -79,7 +79,7 @@
                     };
                     signingKey = mkOption {
                       type = types.str;
-                      default = "~/.ssh/id_rsa.pub";
+                      default = "~/.ssh/id_ed25519.pub";
                       description = "SSH public key for commit signing";
                     };
                   };

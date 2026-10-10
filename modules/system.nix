@@ -69,6 +69,7 @@ in
     libinput.enable = true;
     openssh = {
       enable = true;
+      authorizedKeysFiles = [ ".ssh/id_ed25519.pub" ]; # your own key can log in
       settings = {
         PasswordAuthentication = false;
         KbdInteractiveAuthentication = false;
