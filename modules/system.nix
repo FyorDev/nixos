@@ -93,7 +93,12 @@ in
     hardware.openrgb.enable = true;
     pipewire = {
       enable = true;
+      alsa = {
+        enable = true;
+        support32Bit = true; # wine
+      };
       pulse.enable = true;
+      jack.enable = true; # DAWs
     };
     greetd = {
       enable = true;
