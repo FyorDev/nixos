@@ -8,5 +8,10 @@
       owner = config.user.name;
       mode = "0400";
     };
+    secrets.obs-websocket = {
+      file = ../secrets/obs-websocket.age;
+      owner = config.user.name;
+      mode = "0400";
+    };
   };
 }

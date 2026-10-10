@@ -111,20 +111,6 @@
         enable = true;
         settings.updates.auto_update = true;
       };
-      claude-code = {
-        enable = true;
-        package = null;
-        # attaches to firefox
-        mcpServers.firefox = {
-          command = "${pkgs.firefox-devtools-mcp}/bin/firefox-devtools-mcp";
-          args = [
-            "--connect-existing"
-            "--marionette-port"
-            "2828"
-            "--enable-script"
-          ];
-        };
-      };
       cava = {
         enable = true;
         settings.output = {

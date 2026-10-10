@@ -1,4 +1,8 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  ...
+}:
 let
   insomnium = pkgs.callPackage ../pkgs/insomnium.nix { };
   claude-desktop = pkgs.callPackage ../pkgs/claude-desktop.nix { };
@@ -162,8 +166,7 @@ let
         nixd
         nixfmt
         statix
-        rustup # Rust
-        rust-analyzer
+        rustup # Rust, also manages rust-analyzer
         sccache # shared compiler cache
         mold # fast linker
         gcc # C and C++
@@ -173,8 +176,10 @@ let
         gnumake
         dotnetCorePackages.sdk_10_0 # C#, includes the runtime
         nodejs # Javascript/Typescript
+        typescript-language-server
         python3 # Python
         python3Packages.pip
+        pyright # LSP
         gdtoolkit_4 # GDScript lint and format
         qmk # keyboard firmware
         faust # audio DSP language

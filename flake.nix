@@ -51,6 +51,7 @@
             ./modules/mime.nix
             ./modules/secrets.nix
             ./modules/terminal.nix
+            ./modules/claude.nix
             ./modules/theme.nix
             ./modules/niri.nix
             ./modules/packages.nix
