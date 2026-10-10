@@ -42,6 +42,7 @@
             inputs.stylix.nixosModules.stylix
             ./modules/system.nix
             ./modules/applications.nix
+            ./modules/mime.nix
             ./modules/terminal.nix
             ./modules/theme.nix
             ./modules/niri.nix

@@ -121,6 +121,11 @@ in
     };
   };
 
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1"; # electron and chromium apps use wayland
+    _JAVA_AWT_WM_NONREPARENTING = "1"; # so java swing apps don't draw blank
+  };
+
   security = {
     rtkit.enable = true; # no audio stuttering
     pam.services.greetd.enableGnomeKeyring = true; # unlock keyring at login

@@ -18,6 +18,7 @@ let
         hyprpicker # colour picker
         tesseract # ocr
         libnotify # notify-send
+        xdg-utils # xdg-open and xdg-mime
         nwg-displays # monitor layout gui
         pavucontrol # volume mixer
 
@@ -113,8 +114,6 @@ let
 
         zathura # minimal document viewer
         papers # gnome document viewer
-        qbittorrent # torrents
-        kdePackages.kdenlive # video editor
       ];
     }
     {
@@ -159,7 +158,9 @@ let
     {
       name = "Video";
       icon = "f008";
-      packages = [ ];
+      packages = [
+        kdePackages.kdenlive
+      ];
     }
     {
       name = "CAD";
@@ -169,7 +170,10 @@ let
     {
       name = "Browse";
       icon = "f059f";
-      packages = [ firefox ];
+      packages = [
+        firefox
+        qbittorrent
+      ];
     }
     {
       name = "Game";
