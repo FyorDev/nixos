@@ -82,6 +82,7 @@ in
     fwupd.enable = true; # firmware updates
     gvfs.enable = true; # nautilus virtual fs for trash, mtp and network
     udisks2.enable = true; # mounting
+    gnome.gnome-keyring.enable = true; # secret storage for libsecret apps
     hardware.openrgb.enable = true;
     pipewire = {
       enable = true;
@@ -118,7 +119,10 @@ in
     };
   };
 
-  security.rtkit.enable = true; # no audio stuttering
+  security = {
+    rtkit.enable = true; # no audio stuttering
+    pam.services.greetd.enableGnomeKeyring = true; # unlock keyring at login
+  };
 
   hardware.bluetooth.enable = true;
 

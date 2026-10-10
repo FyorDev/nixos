@@ -8,7 +8,6 @@ let
       packages = [
         # Desktop
         niri-unstable # compositor
-        appimage-run # run AppImages
         fuzzel # launcher
         swaylock # lockscreen
         swaybg # wallpaper
@@ -18,11 +17,8 @@ let
         slurp # region selection
         swappy # screenshot annotation
         playerctl # media keys
-        # Apps
-        alacritty # terminal
-        nautilus # files
-        file-roller # archive manager
-        virt-manager # virtual machines
+        xwayland-satellite # x11 apps under niri
+        appimage-run # run AppImages
         # Networking
         wget # file downloading
         # Archives
@@ -34,7 +30,6 @@ let
         imagemagick # image operations
         exiftool # image metadata
         # Search
-        xwayland-satellite # x11 apps under niri
         ripgrep # fuzzy grep
         fd # find
         # Hardware
@@ -43,7 +38,6 @@ let
         pciutils # lspci
         brightnessctl # backlight
         bluez # bluetoothctl
-        openrgb # rgb lighting
         # Shell
         fish # shell
         fzf # fuzzy finder
@@ -63,6 +57,33 @@ let
         nix-direnv # fast direnv for nix
         nix-index # file search for nixpkgs
         comma # run any package with ,
+      ];
+    }
+    {
+      name = "Desktop";
+      icon = "f108";
+      packages = [
+        # Apps
+        alacritty # terminal
+        nautilus # files
+        file-roller # archive manager
+        virt-manager # virtual machines
+        openrgb # rgb lighting
+        baobab # disk usage analyzer
+        gparted # partition editor
+        gnome-disk-utility # disks, smart and disk images
+        gnome-text-editor # text editor
+        impression # usb flasher
+        gnome-decoder # qr scanner and generator
+        hieroglyphic # latex symbol finder
+        # Media
+        imv # image viewer
+        loupe # gnome image viewer
+        mpv # video player
+        showtime # gnome video player
+        decibels # gnome audio player
+        zathura # minimal document viewer
+        papers # gnome document viewer
       ];
     }
     {
