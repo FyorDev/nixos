@@ -40,6 +40,18 @@ Rebuild with `just switch`, or force pull and rebuild with `just sync`.
 
 Add `background.png` or `background.jpg` to the root and rebuild.
 
+## Secrets
+
+Secrets are encrypted to `~/.ssh/id_ed25519` and committed as `secrets/*.age`.
+
+Re-encrypt after changing a secret
+
+```sh
+age -R ~/.ssh/id_ed25519.pub -o secrets/fmod.env.age <plaintext-file>
+```
+
+`fmod.env` holds `FMOD_USERNAME` and `FMOD_PASSWORD` to download FMOD Studio
+
 ## Release
 
 ```sh

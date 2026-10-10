@@ -1,7 +1,11 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 let
   insomnium = pkgs.callPackage ../pkgs/insomnium.nix { };
   claude-desktop = pkgs.callPackage ../pkgs/claude-desktop.nix { };
+  inky = pkgs.callPackage ../pkgs/inky.nix { };
+  fmod-studio = pkgs.callPackage ../pkgs/fmod-studio.nix {
+    credentials = config.age.secrets.fmod.path;
+  };
 
   # icons are Nerd Font hex codes
   categories = with pkgs; [
@@ -175,7 +179,15 @@ let
     {
       name = "Gamedev";
       icon = "f1b2";
-      packages = [ ];
+      packages = [
+        godot
+        unityhub
+        aseprite
+        ldtk # levels
+        fmod-studio
+        inklecate
+        inky
+      ];
     }
     {
       name = "Art";

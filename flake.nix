@@ -16,6 +16,11 @@
       url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -40,9 +45,11 @@
             inputs.niri.nixosModules.niri
             inputs.home-manager.nixosModules.home-manager
             inputs.stylix.nixosModules.stylix
+            inputs.agenix.nixosModules.default
             ./modules/system.nix
             ./modules/applications.nix
             ./modules/mime.nix
+            ./modules/secrets.nix
             ./modules/terminal.nix
             ./modules/theme.nix
             ./modules/niri.nix
