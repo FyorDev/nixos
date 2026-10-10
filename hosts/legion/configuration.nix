@@ -25,6 +25,17 @@
     powerManagement.finegrained = true; # power the dGPU down when idle
   };
 
+  # games on the nvidia gpu without per-game nvidia-offload
+  # keeps the dgpu awake while steam is open
+  programs.steam.package = pkgs.steam.override {
+    extraEnv = {
+      __NV_PRIME_RENDER_OFFLOAD = "1";
+      __NV_PRIME_RENDER_OFFLOAD_PROVIDER = "NVIDIA-G0";
+      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+      __VK_LAYER_NV_optimus = "NVIDIA_only";
+    };
+  };
+
   services.upower.enable = true; # battery state
   services.power-profiles-daemon.enable = true; # profile switching with powerprofilesctl
 

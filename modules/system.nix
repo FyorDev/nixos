@@ -117,6 +117,16 @@ in
       enable = true;
       package = pkgs.niri-unstable;
     };
+    steam = {
+      enable = true;
+      extraCompatPackages = [ pkgs.proton-ge-bin ];
+      protontricks.enable = true;
+      extest.enable = true; # steam input on wayland
+      remotePlay.openFirewall = true;
+      localNetworkGameTransfers.openFirewall = true;
+    };
+    gamemode.enable = true; # gamemoderun %command%
+    gamescope.enable = true;
     dconf.enable = true; # settings backend for GTK apps
     virt-manager.enable = true;
     xppen.enable = true; # xp-pen tablet driver

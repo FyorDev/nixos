@@ -4,6 +4,7 @@ let
   claude-desktop = pkgs.callPackage ../pkgs/claude-desktop.nix { };
   inky = pkgs.callPackage ../pkgs/inky.nix { };
   fgj = pkgs.callPackage ../pkgs/fgj.nix { };
+  curseforge = pkgs.callPackage ../pkgs/curseforge.nix { };
   fmod-studio = pkgs.callPackage ../pkgs/fmod-studio.nix {
     credentials = config.age.secrets.fmod.path;
   };
@@ -244,7 +245,15 @@ let
     {
       name = "Game";
       icon = "f0296";
-      packages = [ ];
+      packages = [
+        config.programs.steam.package
+        protontricks
+        gamemode
+        gamescope
+        ckan
+        prismlauncher
+        curseforge
+      ];
     }
     {
       name = "Hack";
