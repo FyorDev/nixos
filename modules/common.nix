@@ -1,3 +1,4 @@
+# Base system and services
 {
   config,
   inputs,
@@ -102,8 +103,6 @@ in
       };
     };
   };
-
-  fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
 
   programs = {
     niri = {

@@ -1,3 +1,4 @@
+# Commandline packages and settings
 {
   config,
   inputs,
@@ -29,7 +30,6 @@
     nix-index.enable = true;
     nix-index-database.comma.enable = true;
     zoxide.enable = true;
-    fzf.keybindings = true;
     git = {
       enable = true;
       lfs.enable = true;
@@ -58,34 +58,31 @@
     };
   };
 
-  fonts.packages = with pkgs; [
-    nerd-fonts.symbols-only
-    nerd-fonts.fira-code
-    nerd-fonts.hack
-  ];
-  fonts.fontconfig.defaultFonts = {
-    monospace = [
-      "JetBrainsMono Nerd Font"
-      "Symbols Nerd Font Mono"
-    ];
-    sansSerif = [ "Symbols Nerd Font" ];
-    serif = [ "Symbols Nerd Font" ];
-  };
-
   environment = {
     localBinInPath = true;
     variables = {
       EDITOR = "nvim";
       GIT_EDITOR = "nvim";
       BROWSER = "firefox";
-      FZF_DEFAULT_COMMAND = "fd --type f --hidden --exclude .git";
-      FZF_CTRL_T_COMMAND = "fd --type f --hidden --exclude .git";
-      FZF_ALT_C_COMMAND = "fd --type d --hidden --exclude .git";
     };
   };
 
   home-manager.users.${config.user.name} = {
     programs = {
+      direnv = {
+        enable = true;
+        nix-direnv.enable = true;
+      };
+      bat.enable = true;
+      btop.enable = true;
+      vim.enable = true;
+      fzf = {
+        enable = true;
+        defaultCommand = "fd --type f --hidden --exclude .git";
+        fileWidgetCommand = "fd --type f --hidden --exclude .git";
+        changeDirWidgetCommand = "fd --type d --hidden --exclude .git";
+      };
+
       fish = {
         enable = true;
         plugins = [

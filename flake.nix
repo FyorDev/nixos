@@ -12,6 +12,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -35,9 +39,12 @@
             { disabledModules = [ "programs/wayland/niri.nix" ]; }
             inputs.niri.nixosModules.niri
             inputs.home-manager.nixosModules.home-manager
+            inputs.stylix.nixosModules.stylix
             ./modules/common.nix
             ./modules/home.nix
             ./modules/shell.nix
+            ./modules/theme.nix
+            ./modules/niri.nix
             ./modules/packages.nix
             ./hosts/${name}/configuration.nix
             { networking.hostName = name; }
