@@ -192,24 +192,40 @@ let
     {
       name = "Art";
       icon = "f1fc";
-      packages = [ ];
+      packages = [
+        blender
+        krita
+        inkscape
+        darktable
+        pureref
+        goxel
+        config.programs.xppen.package # XP Pen Artist 22R Pro
+      ];
     }
     {
       name = "Audio";
       icon = "f001";
-      packages = [ ];
+      packages = [
+        vcv-rack
+      ];
     }
     {
       name = "Video";
       icon = "f008";
       packages = [
         kdePackages.kdenlive
+        davinci-resolve # run with nvidia-offload on legion
       ];
     }
     {
       name = "CAD";
       icon = "f0ad";
-      packages = [ ];
+      packages = [
+        freecad
+        kicad
+        prusa-slicer
+        qidi-studio
+      ];
     }
     {
       name = "Browse";
