@@ -272,6 +272,13 @@ let
         obsidian
         keepassxc
         syncthing
+
+        cowsay
+        cbonsai
+        figlet
+        lolcat
+        pipes
+        sl
       ];
     }
   ];
