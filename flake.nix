@@ -40,9 +40,9 @@
             inputs.niri.nixosModules.niri
             inputs.home-manager.nixosModules.home-manager
             inputs.stylix.nixosModules.stylix
-            ./modules/common.nix
-            ./modules/home.nix
-            ./modules/shell.nix
+            ./modules/system.nix
+            ./modules/applications.nix
+            ./modules/terminal.nix
             ./modules/theme.nix
             ./modules/niri.nix
             ./modules/packages.nix
