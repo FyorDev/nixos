@@ -83,6 +83,11 @@ in
     gvfs.enable = true; # nautilus virtual fs for trash, mtp and network
     gnome.sushi.enable = true; # nautilus space preview
     udisks2.enable = true; # mounting
+    syncthing = {
+      enable = true;
+      user = config.user.name;
+      openDefaultPorts = true;
+    };
     blueman.enable = true; # bluetooth applet
     gnome.gnome-keyring.enable = true; # secret storage for libsecret apps
     hardware.openrgb.enable = true;
@@ -137,6 +142,7 @@ in
   };
 
   hardware.bluetooth.enable = true;
+  hardware.keyboard.qmk.enable = true; # udev rules for flashing qmk keyboards
 
   # copied if it doesn't exist
   systemd.tmpfiles.rules = [

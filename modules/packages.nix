@@ -3,6 +3,7 @@ let
   insomnium = pkgs.callPackage ../pkgs/insomnium.nix { };
   claude-desktop = pkgs.callPackage ../pkgs/claude-desktop.nix { };
   inky = pkgs.callPackage ../pkgs/inky.nix { };
+  fgj = pkgs.callPackage ../pkgs/fgj.nix { };
   fmod-studio = pkgs.callPackage ../pkgs/fmod-studio.nix {
     credentials = config.age.secrets.fmod.path;
   };
@@ -82,6 +83,7 @@ let
         btop
         cava # audio visualiser
         tealdeer # tldr pages
+        nushell
 
         # Nix
         nh # nix helper
@@ -147,6 +149,7 @@ let
 
         git # Git
         gh
+        fgj # forgejo cli
         git-cliff
         git-lfs
         difftastic
@@ -215,6 +218,7 @@ let
       packages = [
         kdePackages.kdenlive
         davinci-resolve # run with nvidia-offload on legion
+        obs-studio
       ];
     }
     {
@@ -232,6 +236,8 @@ let
       icon = "f059f";
       packages = [
         firefox
+        chromium
+        spotify
         qbittorrent
       ];
     }
@@ -263,6 +269,9 @@ let
       name = "Util";
       icon = "f0214";
       packages = [
+        obsidian
+        keepassxc
+        syncthing
       ];
     }
   ];
