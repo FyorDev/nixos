@@ -25,6 +25,8 @@ in
     enable = true;
     settings.connection."ethernet.wake-on-lan" = "64";
   };
+  networking.firewall.allowedUDPPorts = [ 4242 ]; # lan-mouse
+
   systemd.network.links."50-wol" = {
     matchConfig.Type = "ether";
     linkConfig.WakeOnLan = "magic";

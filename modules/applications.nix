@@ -107,6 +107,19 @@ in
             ];
           };
         };
+
+        systemd.user.services.lan-mouse = {
+          Unit = {
+            Description = "Lan Mouse";
+            PartOf = [ "graphical-session.target" ];
+            After = [ "graphical-session.target" ];
+          };
+          Service = {
+            ExecStart = "${lib.getExe pkgs.lan-mouse} daemon";
+            Restart = "on-failure";
+          };
+          Install.WantedBy = [ "graphical-session.target" ];
+        };
       };
   };
 }

@@ -297,6 +297,7 @@ let
         obsidian
         keepassxc
         syncthing
+        lan-mouse # share mouse and keyboard between machines
 
         cowsay
         cbonsai
