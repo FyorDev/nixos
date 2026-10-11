@@ -307,6 +307,13 @@ let
   # .desktop files to Super+S app-menu
   desktopEntries =
     let
+      hidden = [
+        # I do not want command-only apps except for neovim
+        "btop.desktop"
+        "htop.desktop"
+        "vim.desktop"
+        "gvim.desktop"
+      ];
       rename = {
         "vesktop.desktop" = "Discord";
         "com.rtosta.zapzap.desktop" = "WhatsApp";
@@ -331,6 +338,11 @@ let
           done
         '') category.packages
       ) categories}
+
+      # Hidden=true deleting entries
+      ${lib.concatMapStrings (name: ''
+        printf '[Desktop Entry]\nType=Application\nName=hidden\nNoDisplay=true\nHidden=true\n' > ${name}
+      '') hidden}
 
       ${lib.concatStrings (
         lib.mapAttrsToList (file: newName: ''
