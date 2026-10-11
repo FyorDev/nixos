@@ -104,6 +104,7 @@ let
       packages = [
         # Apps
         alacritty # terminal
+        term # my own terminal yippee :D
 
         nautilus # files
         ffmpegthumbnailer # video and audio cover thumbnails

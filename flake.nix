@@ -21,6 +21,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+    crane.url = "github:ipetkov/crane"; # for term
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay"; # for term
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    term = {
+      url = "git+ssh://git@github.com/FyorDev/Term.git"; # term
+      flake = false;
+    };
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";

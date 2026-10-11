@@ -34,6 +34,15 @@ in
     config.allowUnfree = true;
     overlays = [
       inputs.niri.overlays.niri
+      inputs.rust-overlay.overlays.default
+      (final: _prev: {
+        term = final.callPackage ../pkgs/term.nix {
+          src = inputs.term;
+          craneLib = (inputs.crane.mkLib final).overrideToolchain (
+            final.rust-bin.fromRustupToolchainFile "${inputs.term}/rust-toolchain.toml"
+          );
+        };
+      })
       # TODO: remove once flake updated https://github.com/sodiboo/niri-flake/issues/1851
       # niri-unstable asserts libdisplay-info 0.2.0, which nixpkgs has dropped
       (final: prev: {

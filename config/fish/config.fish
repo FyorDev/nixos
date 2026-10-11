@@ -15,6 +15,9 @@ function huh
     claude -p --model claude-haiku-4-5-20251001 (string join " " $argv) | glow -s dark - 2>/dev/null
 end
 
+# cowsay nerd
+function akshually; cowsay -f actually (string join " " $argv); end
+
 # haiku generated diff and conventional commit suggestion
 function haikudiff
     begin
