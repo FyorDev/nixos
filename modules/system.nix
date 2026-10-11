@@ -142,6 +142,16 @@ in
     };
     gamemode.enable = true; # gamemoderun %command%
     gamescope.enable = true;
+    ssh.knownHosts = {
+      github = {
+        hostNames = [ "github.com" ];
+        publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
+      };
+      forgejo = {
+        hostNames = [ "[git.blahajresidence.nl]:2222" ];
+        publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEbzDrnHR2L3eqZzdVNE2cv2oWilnY3/7G+HGHUVOVqZ";
+      };
+    };
     dconf.enable = true; # settings backend for GTK apps
     virt-manager.enable = true;
     xppen.enable = true; # xp-pen tablet driver
@@ -155,6 +165,31 @@ in
       binfmt = true;
     };
   };
+
+  # niri leaks VRAM on nvidia unless the driver stops holding freed buffers
+  environment.etc."nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json".text =
+    builtins.toJSON {
+      rules = [
+        {
+          pattern = {
+            feature = "procname";
+            matches = "niri";
+          };
+          profile = "Limit Free Buffer Pool On Wayland Compositors";
+        }
+      ];
+      profiles = [
+        {
+          name = "Limit Free Buffer Pool On Wayland Compositors";
+          settings = [
+            {
+              key = "GLVidHeapReuseRatio";
+              value = 0;
+            }
+          ];
+        }
+      ];
+    };
 
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1"; # electron and chromium apps use wayland
