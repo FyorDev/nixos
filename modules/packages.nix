@@ -247,7 +247,6 @@ let
         signal-desktop
         vesktop # discord
         zapzap # whatsapp
-        spotify
         qbittorrent
       ];
     }

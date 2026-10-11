@@ -12,13 +12,30 @@
     backupFileExtension = "backup";
     overwriteBackup = true;
     extraSpecialArgs = { inherit inputs; };
+    sharedModules = [ inputs.spicetify-nix.homeManagerModules.default ];
 
     users.${config.user.name} = {
       home.stateVersion = "26.05";
 
       stylix.targets.firefox.profileNames = [ "default" ];
+      stylix.targets.spicetify.enable = false;
 
       programs = {
+        spicetify =
+          let
+            spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+          in
+          {
+            enable = true;
+            theme = spicePkgs.themes.catppuccin;
+            colorScheme = "mocha";
+            enabledExtensions = with spicePkgs.extensions; [
+              adblockify
+              keyboardShortcut
+              history
+              volumePercentage
+            ];
+          };
         fuzzel.enable = true;
         alacritty.enable = true;
         swaylock.enable = true;
