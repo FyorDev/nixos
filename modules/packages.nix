@@ -9,6 +9,7 @@ let
   inky = pkgs.callPackage ../pkgs/inky.nix { };
   fgj = pkgs.callPackage ../pkgs/fgj.nix { };
   curseforge = pkgs.callPackage ../pkgs/curseforge.nix { };
+  zotify = pkgs.callPackage ../pkgs/zotify.nix { };
   fmod-studio = pkgs.callPackage ../pkgs/fmod-studio.nix {
     credentials = config.age.secrets.fmod.path;
   };
@@ -62,6 +63,8 @@ let
         exiftool # image metadata
         # Video
         ffmpeg # video and audio conversion
+        yt-dlp # youtube downloader
+        zotify # spotify downloader
 
         # Search
         ripgrep # fuzzy grep
