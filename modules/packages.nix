@@ -54,6 +54,7 @@ let
         # screenshot annotation
         # Networking
         wget # file downloading
+        ethtool # network card settings (wake-on-lan)
 
         # Archives
         zip # zip creation
