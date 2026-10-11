@@ -46,6 +46,15 @@ function fish_greeting; end
 set -g theme_color_scheme catppuccin-mocha
 set -g theme_nerd_fonts yes
 
+# Wake-on-Lan ASUS
+function wake-asus
+    set -l mac (string replace -a : '\x' 24:4b:fe:06:e6:7f)
+    begin
+        printf '\xff%.0s' (seq 6)
+        printf "\x$mac%.0s" (seq 16)
+    end | ssh blahajresidence.nl 'socat - UDP-DATAGRAM:192.168.178.255:9,broadcast'
+end
+
 if status is-interactive
     fastfetch
 end
