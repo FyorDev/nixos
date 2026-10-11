@@ -66,7 +66,7 @@ just release v0.0.0 "title"
 | fish | `Ctrl+N` | neovim |
 | fzf | `Ctrl+R` | history |
 | fzf | `Ctrl+T` | file path |
-| fzf | `Alt+C` | directory |
+| fzf | `Ctrl+G` | directory |
 | niri | `Mod+Y` | clipboard history |
 | niri | `Mod+P` | colour picker (copies hex) |
 | niri | `Print` | screenshot area |

@@ -155,6 +155,10 @@
               hotkey-overlay.title = "Open a Terminal: alacritty";
               action = spawn "alacritty";
             };
+            "Mod+S" = {
+              hotkey-overlay.title = "App categories: app-menu";
+              action = spawn "app-menu";
+            };
             "Mod+D" = {
               hotkey-overlay.title = "Run an Application: fuzzel";
               action = spawn "fuzzel";

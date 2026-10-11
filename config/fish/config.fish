@@ -34,6 +34,10 @@ end
 
 function fish_user_key_bindings
     bind ctrl-n nvim
+    bind -e alt-c
+    bind -M insert -e alt-c
+    bind ctrl-g fzf-cd-widget
+    bind -M insert ctrl-g fzf-cd-widget
 end
 
 # lazy no fish greeting ever

@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }:
@@ -302,7 +303,57 @@ let
       ];
     }
   ];
+
+  # .desktop files to Super+S app-menu
+  desktopEntries =
+    let
+      rename = {
+        "vesktop.desktop" = "Discord";
+        "com.rtosta.zapzap.desktop" = "WhatsApp";
+      };
+    in
+    pkgs.runCommand "desktop-entries" { } ''
+      mkdir -p $out/share/applications
+      cd $out/share/applications
+
+      ${lib.concatMapStrings (
+        category:
+        lib.concatMapStrings (pkg: ''
+          for f in ${pkg}/share/applications/*.desktop; do
+            [ -e "$f" ] || continue
+            name=$(basename "$f")
+            [ -e "$name" ] && continue
+            if grep -q '^Keywords=' "$f"; then
+              sed 's/^Keywords=/Keywords=${category.name};/' "$f" > "$name"
+            else
+              sed '0,/^\[Desktop Entry\]/s//&\nKeywords=${category.name};/' "$f" > "$name"
+            fi
+          done
+        '') category.packages
+      ) categories}
+
+      ${lib.concatStrings (
+        lib.mapAttrsToList (file: newName: ''
+          if [ -e ${lib.escapeShellArg file} ]; then
+            old=$(sed -n 's/^Name=//p' ${lib.escapeShellArg file} | head -1)
+            sed -i -e 's/^Name=.*/Name=${newName}/' -e "s/^Keywords=.*/&$old;/" ${lib.escapeShellArg file}
+          fi
+        '') rename
+      )}
+    '';
+
+  app-menu = pkgs.callPackage ../pkgs/app-menu.nix {
+    inherit desktopEntries;
+    categoryOrder = map (c: { inherit (c) name icon; }) categories;
+  };
 in
 {
-  environment.systemPackages = builtins.concatMap (category: category.packages) categories;
+  environment.systemPackages = builtins.concatMap (category: category.packages) categories ++ [
+    app-menu
+  ];
+
+  home-manager.users.${config.user.name}.xdg.dataFile."applications" = {
+    recursive = true;
+    source = "${desktopEntries}/share/applications";
+  };
 }

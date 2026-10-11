@@ -2,6 +2,7 @@
 {
   config,
   inputs,
+  lib,
   pkgs,
   ...
 }:
@@ -36,7 +37,16 @@
               volumePercentage
             ];
           };
-        fuzzel.enable = true;
+        fuzzel = {
+          enable = true;
+          settings.main = {
+            font = lib.mkForce "${config.stylix.fonts.monospace.name}:size=12";
+            icon-theme = "Papirus-Dark";
+            terminal = "alacritty -e";
+            width = 45;
+            lines = 15;
+          };
+        };
         alacritty.enable = true;
         swaylock.enable = true;
         mpv.enable = true;
