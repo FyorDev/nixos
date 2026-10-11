@@ -28,7 +28,11 @@ in
     let
       firefox = config.programs.firefox.finalPackage;
       firefoxLauncher = pkgs.writeShellScript "firefox" ''
-        exec ${lib.getExe firefox} --marionette --remote-debugging-port --remote-allow-system-access "$@"
+        pid=$(readlink "$HOME/.config/mozilla/firefox/default/lock" 2>/dev/null)
+        if [ -n "$pid" ] && kill -0 "''${pid##*+}" 2>/dev/null; then
+          exec ${lib.getExe firefox} "$@"
+        fi
+        exec ${lib.getExe firefox} --marionette --remote-debugging-port 9222 --remote-allow-system-access "$@"
       '';
     in
     {

@@ -1,0 +1,12 @@
+:root
+{
+    --navbar-current-background-color: #1e1e2e !important;
+    --table-row-odd-background-color: #313244 !important;
+    --code-border-color: #313244 !important;
+    --body-color: #cdd6f4 !important;
+    --content-wrap-background-color: #181825 !important;
+    --content-background-color: #1e1e2e !important;
+    --navbar-background-color: #181825 !important;
+    --navbar-current-background-color-hover: #1e1e2e !important;
+    --input-background-color: #1e1e2e !important;
+}

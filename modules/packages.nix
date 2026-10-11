@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -11,6 +12,7 @@ let
   fgj = pkgs.callPackage ../pkgs/fgj.nix { };
   curseforge = pkgs.callPackage ../pkgs/curseforge.nix { };
   zotify = pkgs.callPackage ../pkgs/zotify.nix { };
+  spicetify = config.programs.spicetify.spicedSpotify;
   fmod-studio = pkgs.callPackage ../pkgs/fmod-studio.nix {
     credentials = config.age.secrets.fmod.path;
   };
@@ -252,6 +254,7 @@ let
         vesktop # discord
         zapzap # whatsapp
         qbittorrent
+        spicetify # spotify
       ];
     }
     {
@@ -360,6 +363,24 @@ let
   };
 in
 {
+  stylix.targets.spicetify.enable = false;
+
+  programs.spicetify =
+    let
+      spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+    in
+    {
+      enable = true;
+      theme = spicePkgs.themes.catppuccin;
+      colorScheme = "mocha";
+      enabledExtensions = with spicePkgs.extensions; [
+        adblockify
+        keyboardShortcut
+        history
+        volumePercentage
+      ];
+    };
+
   environment.systemPackages = builtins.concatMap (category: category.packages) categories ++ [
     app-menu
   ];

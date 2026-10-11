@@ -58,8 +58,10 @@
             inputs.home-manager.nixosModules.home-manager
             inputs.stylix.nixosModules.stylix
             inputs.agenix.nixosModules.default
+            inputs.spicetify-nix.nixosModules.default
             ./modules/system.nix
             ./modules/applications.nix
+            ./modules/firefox.nix
             ./modules/mime.nix
             ./modules/secrets.nix
             ./modules/terminal.nix

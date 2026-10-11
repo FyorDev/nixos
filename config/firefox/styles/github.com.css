@@ -1,0 +1,18 @@
+:root {
+    background-color: #1e1e2e !important;
+    --AppHeader-bg: #1e1e2e !important;
+    --bgColor-default: #1e1e2e !important;
+    --background-color: #1e1e2e !important;
+    --background-primary-alt: #1e1e2e !important;
+    --background-secondary-alt: #1e1e2e !important;
+    --background-tertiary-alt: #1e1e2e !important;
+    --channeltextarea-background: #1e1e2e !important;
+}
+
+.AppHeader {
+    --AppHeader-bg: #1e1e2e !important;
+}
+
+body {
+    background-color: #1e1e2e !important;
+}
