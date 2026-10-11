@@ -210,6 +210,7 @@ in
   };
 
   security = {
+    polkit.enable = true; # privilege prompt for mounting drives etc
     rtkit.enable = true; # no audio stuttering
     pam.services.greetd.enableGnomeKeyring = true; # unlock keyring at login
   };

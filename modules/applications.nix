@@ -91,6 +91,7 @@ in
         };
 
         services = {
+          polkit-gnome.enable = true; # password prompt for mounting etc
           swayosd.enable = true;
           cliphist.enable = true;
           mako.enable = true;
