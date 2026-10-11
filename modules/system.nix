@@ -43,6 +43,12 @@ in
           );
         };
       })
+      # goxel's Makefile hardcodes -Werror and the newer gcc trips on its code
+      (_final: prev: {
+        goxel = prev.goxel.overrideAttrs (old: {
+          NIX_CFLAGS_COMPILE = (old.NIX_CFLAGS_COMPILE or "") + " -Wno-error";
+        });
+      })
       # TODO: remove once flake updated https://github.com/sodiboo/niri-flake/issues/1851
       # niri-unstable asserts libdisplay-info 0.2.0, which nixpkgs has dropped
       (final: prev: {
