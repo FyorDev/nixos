@@ -21,7 +21,14 @@ in
     efi.canTouchEfiVariables = true;
   };
 
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+    enable = true;
+    settings.connection."ethernet.wake-on-lan" = "64";
+  };
+  systemd.network.links."50-wol" = {
+    matchConfig.Type = "ether";
+    linkConfig.WakeOnLan = "magic";
+  };
 
   nix = {
     settings.experimental-features = [
