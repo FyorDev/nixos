@@ -104,7 +104,7 @@
         };
 
         layout = {
-          gaps = 16;
+          gaps = 0;
           center-focused-column = "never";
           preset-column-widths = [
             { proportion = 0.33333; }
