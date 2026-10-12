@@ -89,6 +89,15 @@
     {
       home.packages = [ screenshot-ocr ];
 
+      # nwg-displays writes monitor.kdl
+      xdg.configFile.niri-config.source = lib.mkForce (
+        pkgs.writeText "config.kdl" ''
+          include "monitor.kdl"
+
+          ${config.programs.niri.finalConfig}
+        ''
+      );
+
       programs.niri.settings = {
         input = {
           keyboard = {
