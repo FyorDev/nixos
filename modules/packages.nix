@@ -12,6 +12,17 @@ let
   fgj = pkgs.callPackage ../pkgs/fgj.nix { };
   curseforge = pkgs.callPackage ../pkgs/curseforge.nix { };
   zotify = pkgs.callPackage ../pkgs/zotify.nix { };
+  # wine with the fix for FL Studio 26.1.4+ refusing to start (wine MR 11824,
+  # TODO: drop the patch once it reaches a release)
+  wine-signedattrs-fix = pkgs.wineWow64Packages.stable.overrideAttrs (old: {
+    patches = (old.patches or [ ]) ++ [
+      ../pkgs/patches/wine-crypt32-preserve-signedattrs-order.patch
+    ];
+  });
+  fl-studio = pkgs.callPackage ../pkgs/fl-studio.nix {
+    wine = wine-signedattrs-fix;
+    nestedCompositor = true; # labwc in niri, fixes black space on resize
+  };
   spicetify = config.programs.spicetify.spicedSpotify;
   fmod-studio = pkgs.callPackage ../pkgs/fmod-studio.nix {
     credentials = config.age.secrets.fmod.path;
@@ -245,6 +256,7 @@ let
       icon = "f001";
       packages = [
         vcv-rack
+        fl-studio # windows version under wine
       ];
     }
     {
@@ -291,6 +303,8 @@ let
         ckan
         prismlauncher
         curseforge
+        wineWow64Packages.stable
+        winetricks
       ];
     }
     {
@@ -340,6 +354,8 @@ let
         "htop.desktop"
         "vim.desktop"
         "gvim.desktop"
+        "wine.desktop"
+        "winetricks.desktop"
       ];
       rename = {
         "vesktop.desktop" = "Discord";
