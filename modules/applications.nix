@@ -7,6 +7,17 @@
   ...
 }:
 let
+  vscodeSettings = pkgs.writeText "vscode-settings.json" (
+    builtins.toJSON {
+      "workbench.colorTheme" = "Catppuccin Mocha";
+      "workbench.iconTheme" = "catppuccin-mocha";
+      "catppuccin.accentColor" = "mauve";
+      "editor.fontFamily" = "'${config.stylix.fonts.monospace.name}'";
+      "terminal.integrated.fontFamily" = "'${config.stylix.fonts.monospace.name}'";
+      "window.titleBarStyle" = "custom";
+    }
+  );
+
   wl-uinput-proxy = pkgs.callPackage ../pkgs/wl-uinput-proxy.nix { };
 
   obsProfile = "Untitled";
@@ -64,11 +75,63 @@ in
       {
         home.stateVersion = "26.05";
 
-        home.activation.obsDefaults = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          dir="$HOME/.config/obs-studio"
-          run mkdir -p "$HOME/Videos/obs" "$dir/basic/profiles/${obsProfile}"
-          ${lib.concatStringsSep "\n" (lib.mapAttrsToList obsSetIni obsSettings)}
-        '';
+        home.activation = {
+          obsDefaults = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+            dir="$HOME/.config/obs-studio"
+            run mkdir -p "$HOME/Videos/obs" "$dir/basic/profiles/${obsProfile}"
+            ${lib.concatStringsSep "\n" (lib.mapAttrsToList obsSetIni obsSettings)}
+          '';
+
+          vscodeSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+            settings="$HOME/.config/Code/User/settings.json"
+            if [ ! -e "$settings" ]; then
+              run install -Dm644 ${vscodeSettings} "$settings"
+            fi
+          '';
+        };
+
+        stylix.targets.vscode.enable = false;
+
+        programs.vscode = {
+          enable = true;
+          profiles.default.extensions =
+            let
+              nixpkgs = pkgs.vscode-extensions;
+              marketplace = (pkgs.nix-vscode-extensions.forVSCodeVersion pkgs.vscode.version).vscode-marketplace;
+            in
+            [
+              nixpkgs.catppuccin.catppuccin-vsc
+              nixpkgs.catppuccin.catppuccin-vsc-icons
+              nixpkgs.anthropic.claude-code
+              nixpkgs.fill-labs.dependi
+              nixpkgs.geequlim.godot-tools
+              nixpkgs.ms-dotnettools.csdevkit
+              nixpkgs.ms-dotnettools.csharp
+              nixpkgs.ms-dotnettools.vscode-dotnet-runtime
+              nixpkgs.ms-python.debugpy
+              nixpkgs.ms-python.python
+              nixpkgs.ms-python.vscode-pylance
+              nixpkgs.ms-python.vscode-python-envs
+              nixpkgs.ms-vscode.cpptools
+              nixpkgs.rust-lang.rust-analyzer
+              nixpkgs.svelte.svelte-vscode
+              marketplace."1yib".rust-bundle
+              marketplace."1yib".svelte-bundle
+              marketplace.ardenivanov.svelte-intellisense
+              marketplace.bdrisc.agda2-vscode
+              marketplace.dbcode.dbcode
+              marketplace.dtoplak.vscode-glsllint
+              marketplace.dustypomerleau.rust-syntax
+              marketplace.fivethree.vscode-svelte-snippets
+              marketplace.glen-anderson.vscode-faust
+              marketplace.j-mueller.agda
+              marketplace.jeronimoekerdt.color-picker-universal
+              marketplace.orbenozio.claude-code-nonstop
+              marketplace.platformio.platformio-ide
+              marketplace.slevesque.shader
+              marketplace.visualstudiotoolsforunity.vstuc
+            ];
+        };
 
         programs = {
           fuzzel = {

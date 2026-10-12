@@ -44,6 +44,7 @@ in
     overlays = [
       inputs.niri.overlays.niri
       inputs.rust-overlay.overlays.default
+      inputs.nix-vscode-extensions.overlays.default
       (final: _prev: {
         term = final.callPackage ../pkgs/term.nix {
           src = inputs.term;
