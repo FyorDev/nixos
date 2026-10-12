@@ -16,6 +16,10 @@
       url = "github:nix-community/nix-vscode-extensions"; # marketplace extensions nixpkgs lacks
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    catppuccin = {
+      url = "github:catppuccin/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -56,6 +60,7 @@
             { disabledModules = [ "programs/wayland/niri.nix" ]; }
             inputs.niri.nixosModules.niri
             inputs.home-manager.nixosModules.home-manager
+            inputs.catppuccin.nixosModules.catppuccin
             inputs.agenix.nixosModules.default
             inputs.spicetify-nix.nixosModules.default
             ./modules/system.nix
@@ -66,6 +71,7 @@
             ./modules/terminal.nix
             ./modules/claude.nix
             ./modules/theme.nix
+            ./modules/catppuccin.nix
             ./modules/niri.nix
             ./modules/packages.nix
             ./hosts/${name}/configuration.nix

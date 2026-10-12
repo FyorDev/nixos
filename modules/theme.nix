@@ -77,15 +77,6 @@ in
   };
 
   home-manager.users.${config.user.name} = {
-    gtk = {
-      enable = true;
-      iconTheme = {
-        package = pkgs.papirus-icon-theme;
-        name = "Papirus-Dark";
-      };
-    };
-    dconf.settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
-
     systemd.user.services.swaybg = lib.mkIf (background != null) {
       Unit = {
         # swap the wallpaper live
