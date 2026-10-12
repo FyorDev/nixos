@@ -218,6 +218,28 @@ in
   security = {
     polkit.enable = true; # privilege prompt for mounting drives etc
     rtkit.enable = true; # no audio stuttering
+    # WineASIO locks its memory, the default 8 MiB memlock limit makes FL
+    # Studio's own allocations fail once the driver loads
+    pam.loginLimits = [
+      {
+        domain = "@audio";
+        type = "-";
+        item = "memlock";
+        value = "unlimited";
+      }
+      {
+        domain = "@audio";
+        type = "-";
+        item = "rtprio";
+        value = "95";
+      }
+      {
+        domain = "@audio";
+        type = "-";
+        item = "nice";
+        value = "-19";
+      }
+    ];
     pam.services.greetd.enableGnomeKeyring = true; # unlock keyring at login
   };
 
