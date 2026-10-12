@@ -127,6 +127,12 @@ in
       };
       pulse.enable = true;
       jack.enable = true; # DAWs
+      # The bridge exposes PipeWire-System and PipeWire-RT-Event as ALSA seq
+      # ports that Wine lists as MIDI inputs but can't open, which makes FL
+      # Studio report "failed to open device" on startup. Hardware MIDI is
+      # kernel seq and is unaffected.
+      wireplumber.extraConfig."51-no-alsa-midi-bridge"."wireplumber.profiles".main."monitor.alsa-midi" =
+        "disabled";
     };
     greetd = {
       enable = true;
