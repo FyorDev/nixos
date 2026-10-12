@@ -3,6 +3,7 @@ alias l 'eza -laH --icons --git --group-directories-first --time-style=long-iso 
 alias lg 'l --git-ignore'
 alias lr 'eza --tree --icons --group-directories-first --hyperlink'
 alias lrg 'lr --git-ignore'
+set -gx EZA_COLORS 'ur=92:uw=92:ux=92;1:ue=31;1:gr=92:gw=92:gx=31;1:tr=92:tw=92:tx=31;1:uu=34;1:uR=31;1:da=92:lc=34;1:nb=92'
 
 # start claude with rest of args as a string
 function haiku; claude --model haiku (string join " " $argv); end
