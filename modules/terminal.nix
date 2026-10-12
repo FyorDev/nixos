@@ -157,6 +157,14 @@
             run ${pkgs.yq-go}/bin/yq -i '.hosts."git.blahajresidence.nl".git_protocol = "ssh"' "$cfg"
           fi
         '';
+        # lazy.nvim
+        activation.nvimConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+          dir="$HOME/.config/nvim"
+          if [ ! -e "$dir" ]; then
+            PATH="${pkgs.openssh}/bin:$PATH" run ${pkgs.git}/bin/git clone \
+              git@github.com:FyorDev/kickstart.nvim.git "$dir" || true
+          fi
+        '';
         sessionVariables.SCCACHE_CACHE_SIZE = "20G";
       };
 
