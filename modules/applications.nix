@@ -7,6 +7,8 @@
   ...
 }:
 let
+  wl-uinput-proxy = pkgs.callPackage ../pkgs/wl-uinput-proxy.nix { };
+
   obsProfile = "Untitled";
   obsSettings = {
     "user.ini" = {
@@ -115,7 +117,7 @@ in
             After = [ "graphical-session.target" ];
           };
           Service = {
-            ExecStart = "${lib.getExe pkgs.lan-mouse} daemon";
+            ExecStart = "${lib.getExe wl-uinput-proxy} ${lib.getExe pkgs.lan-mouse} daemon";
             Restart = "on-failure";
           };
           Install.WantedBy = [ "graphical-session.target" ];
