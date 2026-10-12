@@ -88,6 +88,20 @@ in
               run install -Dm644 ${vscodeSettings} "$settings"
             fi
           '';
+
+          # activate VSCode keyring, it does not detect one and suggests
+          # to weaken encryption
+          vscodeKeyring = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+            argv="$HOME/.vscode/argv.json"
+            if [ ! -e "$argv" ]; then
+              run mkdir -p "$(dirname "$argv")"
+              run sh -c "printf '{\n\t\"password-store\": \"gnome-libsecret\"\n}\n' > \"$argv\""
+            elif grep -qE '^[[:space:]]*"password-store"' "$argv"; then
+              run sed -i -E 's/^([[:space:]]*"password-store"[[:space:]]*:[[:space:]]*)"[^"]*"/\1"gnome-libsecret"/' "$argv"
+            else
+              run sed -i '0,/{/s//{\n\t"password-store": "gnome-libsecret",/' "$argv"
+            fi
+          '';
         };
 
         stylix.targets.vscode.enable = false;
