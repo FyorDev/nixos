@@ -112,6 +112,8 @@ in
     syncthing = {
       enable = true;
       user = config.user.name;
+      dataDir = config.users.users.${config.user.name}.home;
+      configDir = "${config.users.users.${config.user.name}.home}/.local/state/syncthing";
       openDefaultPorts = true;
     };
     blueman.enable = true; # bluetooth applet

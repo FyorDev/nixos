@@ -91,6 +91,7 @@ in
         };
 
         stylix.targets.vscode.enable = false;
+        stylix.targets.rofi.enable = false;
 
         programs = {
           fuzzel = {
