@@ -28,26 +28,25 @@ let
     credentials = config.age.secrets.fmod.path;
   };
 
-  firefox-plain = # skips marionette
-    let
-      firefox = config.home-manager.users.${config.user.name}.programs.firefox.finalPackage;
-    in
-    pkgs.symlinkJoin {
-      name = "firefox-plain";
-      paths = [
-        (pkgs.writeShellScriptBin "firefox-plain" ''exec ${lib.getExe firefox} "$@"'')
-        (pkgs.makeDesktopItem {
-          name = "firefox-plain";
-          desktopName = "Firefox (plain)";
-          exec = "firefox-plain %U";
-          icon = "firefox";
-          categories = [
-            "Network"
-            "WebBrowser"
-          ];
-        })
-      ];
-    };
+  # stock firefox, no marionette
+  firefox-plain = pkgs.symlinkJoin {
+    name = "firefox-plain";
+    paths = [
+      (pkgs.writeShellScriptBin "firefox-plain" ''
+        exec ${lib.getExe pkgs.firefox} --no-remote --profile "$HOME/.config/mozilla/firefox/default" "$@"
+      '')
+      (pkgs.makeDesktopItem {
+        name = "firefox-plain";
+        desktopName = "Firefox (plain)";
+        exec = "firefox-plain %U";
+        icon = "firefox";
+        categories = [
+          "Network"
+          "WebBrowser"
+        ];
+      })
+    ];
+  };
 
   # icons are Nerd Font hex codes
   categories = with pkgs; [
