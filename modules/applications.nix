@@ -96,7 +96,13 @@ in
           polkit-gnome.enable = true; # password prompt for mounting etc
           swayosd.enable = true;
           cliphist.enable = true;
-          mako.enable = true;
+          mako = {
+            enable = true;
+            settings = {
+              anchor = "top-center";
+              default-timeout = 3000;
+            };
+          };
           blueman-applet.enable = true;
           network-manager-applet.enable = true;
           swayidle = {
