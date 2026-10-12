@@ -267,6 +267,16 @@ let
             # and waiting to get it back. See also ALWAYS_OPAQUE in
             # config/niri/window-opacity.py -- an opacity rule on this window would
             # put it on niri's 1s offscreen timer and undo all of it.
+            # A wineserver left over from the provisioning above (or any earlier
+            # Wine run on this prefix) still holds the screen size of whatever
+            # display it started under, 1024x768 for a fresh Xwayland. Wine then
+            # clips FL to that size: the window lays out at the full nested size
+            # but only the top-left 1024x768 is ever painted and the rest stays
+            # black, no matter how often it is redrawn. A new server reads the
+            # size from labwc's display and follows its resizes.
+            wineserver -k 2>/dev/null || true
+            wineserver --wait
+
             export WLR_NO_HARDWARE_CURSORS=1
             export WLR_SCENE_DISABLE_DIRECT_SCANOUT=1
             # Takes DXVK off the FIFO/flip path, where it blocks waiting on exactly
