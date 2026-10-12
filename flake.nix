@@ -12,10 +12,6 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    stylix = {
-      url = "github:nix-community/stylix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-vscode-extensions = {
       url = "github:nix-community/nix-vscode-extensions"; # marketplace extensions nixpkgs lacks
       inputs.nixpkgs.follows = "nixpkgs";
@@ -60,7 +56,6 @@
             { disabledModules = [ "programs/wayland/niri.nix" ]; }
             inputs.niri.nixosModules.niri
             inputs.home-manager.nixosModules.home-manager
-            inputs.stylix.nixosModules.stylix
             inputs.agenix.nixosModules.default
             inputs.spicetify-nix.nixosModules.default
             ./modules/system.nix

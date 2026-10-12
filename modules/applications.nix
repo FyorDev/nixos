@@ -12,8 +12,8 @@ let
       "workbench.colorTheme" = "Catppuccin Mocha";
       "workbench.iconTheme" = "catppuccin-mocha";
       "catppuccin.accentColor" = "mauve";
-      "editor.fontFamily" = "'${config.stylix.fonts.monospace.name}'";
-      "terminal.integrated.fontFamily" = "'${config.stylix.fonts.monospace.name}'";
+      "editor.fontFamily" = "'JetBrainsMono Nerd Font'";
+      "terminal.integrated.fontFamily" = "'JetBrainsMono Nerd Font'";
       "window.titleBarStyle" = "custom";
     }
   );
@@ -104,14 +104,11 @@ in
           '';
         };
 
-        stylix.targets.vscode.enable = false;
-        stylix.targets.rofi.enable = false;
-
         programs = {
           fuzzel = {
             enable = true;
             settings.main = {
-              font = lib.mkForce "${config.stylix.fonts.monospace.name}:size=12";
+              font = "JetBrainsMono Nerd Font:size=12";
               icon-theme = "Papirus-Dark";
               terminal = "alacritty -e";
               width = 45;

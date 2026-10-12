@@ -121,7 +121,6 @@
             { proportion = 0.66667; }
           ];
           default-column-width.proportion = 0.5;
-          # colours and which of the two is on come from the stylix target
           focus-ring.width = 4;
           border.width = 4;
           shadow = {

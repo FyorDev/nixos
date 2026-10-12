@@ -43,8 +43,6 @@ in
   home-manager.users.${config.user.name} =
     { lib, ... }:
     {
-      stylix.targets.firefox.profileNames = [ "default" ];
-
       programs.firefox = {
         enable = true;
         nativeMessagingHosts = [ pkgs.keepassxc ]; # for KeePassXC-Browser
