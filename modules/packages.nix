@@ -271,7 +271,8 @@ let
       name = "CAD";
       icon = "f0ad";
       packages = [
-        freecad
+        # TODO: re-enable once vtk builds in nixpkgs
+        # freecad
         kicad
         prusa-slicer
         qidi-studio
