@@ -74,3 +74,7 @@ just release v0.0.0 "title"
 | niri | `Alt+Print` | screenshot window |
 | niri | `Mod+Shift+S` | annotate a screenshot |
 | niri | `Mod+Shift+Print` | copy text from screen (OCR) |
+| niri | `Mod+Return` | Term |
+| niri | `Mod+T` | Term terminal |
+| niri | `Mod+B` | Firefox |
+| niri | `Mod+E` | Files |

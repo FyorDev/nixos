@@ -152,8 +152,20 @@
             "Mod+Shift+Slash".action = show-hotkey-overlay;
 
             "Mod+T" = {
-              hotkey-overlay.title = "Open a Terminal: alacritty";
-              action = spawn "alacritty";
+              hotkey-overlay.title = "Open a Terminal: term, bare";
+              action = spawn "term" "--bare" "--no-bar";
+            };
+            "Mod+Return" = {
+              hotkey-overlay.title = "Open Term";
+              action = spawn "term";
+            };
+            "Mod+B" = {
+              hotkey-overlay.title = "Open a Browser: firefox";
+              action = spawn "firefox";
+            };
+            "Mod+E" = {
+              hotkey-overlay.title = "Open Files: nautilus";
+              action = spawn "nautilus";
             };
             "Mod+S" = {
               hotkey-overlay.title = "App categories: app-menu";
