@@ -92,47 +92,6 @@ in
 
         stylix.targets.vscode.enable = false;
 
-        programs.vscode = {
-          enable = true;
-          profiles.default.extensions =
-            let
-              nixpkgs = pkgs.vscode-extensions;
-              marketplace = (pkgs.nix-vscode-extensions.forVSCodeVersion pkgs.vscode.version).vscode-marketplace;
-            in
-            [
-              nixpkgs.catppuccin.catppuccin-vsc
-              nixpkgs.catppuccin.catppuccin-vsc-icons
-              nixpkgs.anthropic.claude-code
-              nixpkgs.fill-labs.dependi
-              nixpkgs.geequlim.godot-tools
-              nixpkgs.ms-dotnettools.csdevkit
-              nixpkgs.ms-dotnettools.csharp
-              nixpkgs.ms-dotnettools.vscode-dotnet-runtime
-              nixpkgs.ms-python.debugpy
-              nixpkgs.ms-python.python
-              nixpkgs.ms-python.vscode-pylance
-              nixpkgs.ms-python.vscode-python-envs
-              nixpkgs.ms-vscode.cpptools
-              nixpkgs.rust-lang.rust-analyzer
-              nixpkgs.svelte.svelte-vscode
-              marketplace."1yib".rust-bundle
-              marketplace."1yib".svelte-bundle
-              marketplace.ardenivanov.svelte-intellisense
-              marketplace.bdrisc.agda2-vscode
-              marketplace.dbcode.dbcode
-              marketplace.dtoplak.vscode-glsllint
-              marketplace.dustypomerleau.rust-syntax
-              marketplace.fivethree.vscode-svelte-snippets
-              marketplace.glen-anderson.vscode-faust
-              marketplace.j-mueller.agda
-              marketplace.jeronimoekerdt.color-picker-universal
-              marketplace.orbenozio.claude-code-nonstop
-              marketplace.platformio.platformio-ide
-              marketplace.slevesque.shader
-              marketplace.visualstudiotoolsforunity.vstuc
-            ];
-        };
-
         programs = {
           fuzzel = {
             enable = true;
@@ -152,6 +111,62 @@ in
           waybar = {
             enable = true;
             systemd.enable = true;
+          };
+          vesktop = {
+            enable = true;
+            settings = {
+              minimizeToTray = false;
+              discordBranch = "stable";
+            };
+            vencord.settings = {
+              autoUpdate = false;
+              plugins = {
+                ClearURLs.enabled = true;
+                FakeNitro.enabled = true;
+                MessageLogger.enabled = true;
+              };
+            };
+          };
+
+          vscode = {
+            enable = true;
+            profiles.default.extensions =
+              let
+                nixpkgs = pkgs.vscode-extensions;
+                marketplace = (pkgs.nix-vscode-extensions.forVSCodeVersion pkgs.vscode.version).vscode-marketplace;
+              in
+              [
+                nixpkgs.catppuccin.catppuccin-vsc
+                nixpkgs.catppuccin.catppuccin-vsc-icons
+                nixpkgs.anthropic.claude-code
+                nixpkgs.fill-labs.dependi
+                nixpkgs.geequlim.godot-tools
+                nixpkgs.ms-dotnettools.csdevkit
+                nixpkgs.ms-dotnettools.csharp
+                nixpkgs.ms-dotnettools.vscode-dotnet-runtime
+                nixpkgs.ms-python.debugpy
+                nixpkgs.ms-python.python
+                nixpkgs.ms-python.vscode-pylance
+                nixpkgs.ms-python.vscode-python-envs
+                nixpkgs.ms-vscode.cpptools
+                nixpkgs.rust-lang.rust-analyzer
+                nixpkgs.svelte.svelte-vscode
+                marketplace."1yib".rust-bundle
+                marketplace."1yib".svelte-bundle
+                marketplace.ardenivanov.svelte-intellisense
+                marketplace.bdrisc.agda2-vscode
+                marketplace.dbcode.dbcode
+                marketplace.dtoplak.vscode-glsllint
+                marketplace.dustypomerleau.rust-syntax
+                marketplace.fivethree.vscode-svelte-snippets
+                marketplace.glen-anderson.vscode-faust
+                marketplace.j-mueller.agda
+                marketplace.jeronimoekerdt.color-picker-universal
+                marketplace.orbenozio.claude-code-nonstop
+                marketplace.platformio.platformio-ide
+                marketplace.slevesque.shader
+                marketplace.visualstudiotoolsforunity.vstuc
+              ];
           };
         };
 

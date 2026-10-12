@@ -59,6 +59,10 @@ let
       pkg = pkgs.qbittorrent;
       file = "org.qbittorrent.qBittorrent.desktop";
     }
+    {
+      pkg = pkgs.keepassxc;
+      file = "org.keepassxc.KeePassXC.desktop"; # kdbx
+    }
   ];
 
   # Extra types not listed in .desktop files

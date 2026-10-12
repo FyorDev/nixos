@@ -17,6 +17,27 @@ let
     credentials = config.age.secrets.fmod.path;
   };
 
+  firefox-plain = # skips marionette
+    let
+      firefox = config.home-manager.users.${config.user.name}.programs.firefox.finalPackage;
+    in
+    pkgs.symlinkJoin {
+      name = "firefox-plain";
+      paths = [
+        (pkgs.writeShellScriptBin "firefox-plain" ''exec ${lib.getExe firefox} "$@"'')
+        (pkgs.makeDesktopItem {
+          name = "firefox-plain";
+          desktopName = "Firefox (plain)";
+          exec = "firefox-plain %U";
+          icon = "firefox";
+          categories = [
+            "Network"
+            "WebBrowser"
+          ];
+        })
+      ];
+    };
+
   # icons are Nerd Font hex codes
   categories = with pkgs; [
     {
@@ -250,6 +271,7 @@ let
       icon = "f059f";
       packages = [
         firefox
+        firefox-plain # without marionette
         chromium
         signal-desktop
         vesktop # discord
