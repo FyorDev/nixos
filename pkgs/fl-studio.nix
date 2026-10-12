@@ -15,6 +15,7 @@
   runCommand,
   wine,
   wineasio,
+  pipewire,
   winetricks,
   curl,
   coreutils,
@@ -170,6 +171,8 @@ let
       export WINEDEBUG=-all
       # WineASIO ships as a PE/unix pair, this is where Wine finds both halves
       export WINEDLLPATH="${wineasioUnix}''${WINEDLLPATH:+:$WINEDLLPATH}"
+      # WineASIO dlopens libjack.so.0 itself, so it has to be findable
+      export LD_LIBRARY_PATH="${pipewire.jack}/lib''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
       # No winemenubuilder, so Wine stops scattering .desktop files into
       # ~/.local. d2d1 and dwrite stay on Wine's builtins: FL's installer drops
       # its own copies into system32 and forcing those changed nothing either
@@ -201,15 +204,22 @@ let
           # created. PipeWire serves ALSA clients too, so nothing is lost.
           wine reg add 'HKCU\Software\Wine\Drivers' /v Audio /d alsa /f
 
-          # WineASIO. The PE stub goes in the prefix under the name its own
-          # internals use; the unix half is on WINEDLLPATH above under the
-          # matching name. Both have to be "wineasio.dll" or the builtin loader
-          # can't pair them up.
+          wineserver --wait
+      }
+
+      # Separate from prepare_prefix so prefixes provisioned before this was
+      # fixed pick it up too.
+      setup_wineasio() {
+          # The PE stub goes in the prefix under the name its unix half is
+          # found by on WINEDLLPATH above, "wineasio.dll".
           install -Dm644 ${wineasio}/lib/wine/x86_64-windows/wineasio64.dll \
               "$WINEPREFIX/drive_c/windows/system32/wineasio.dll"
           wine regsvr32 wineasio.dll || \
               echo "wineasio: registration failed, FL Studio can still use its own FL Studio ASIO" >&2
-
+          # regsvr32 records the stub's hardcoded "wineasio64.dll", which no
+          # longer exists in system32, so FL lists the driver but can't load it.
+          wine reg add 'HKLM\Software\Classes\CLSID\{48D0C522-BFCC-45CC-8B84-17F25F33E6E8}\InProcServer32' \
+              /ve /d wineasio.dll /f /reg:64
           wineserver --wait
       }
 
@@ -229,6 +239,11 @@ let
           fi
           prepare_prefix
           touch "$prepared"
+      fi
+
+      if [ ! -e "$WINEPREFIX/.nix-wineasio-ready" ]; then
+          setup_wineasio
+          touch "$WINEPREFIX/.nix-wineasio-ready"
       fi
 
       if [ -z "$(find_fl)" ]; then
