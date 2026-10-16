@@ -180,7 +180,8 @@ in
           }
 
           run mkdir -p "$HOME/.config/keepassxc" "$HOME/.config/obs-studio" "$HOME/.config/ZapZap"
-          crudini --set "$HOME/.config/keepassxc/keepassxc.ini" GUI ApplicationTheme auto
+          # classic takes the Kvantum palette, auto and dark use KeePassXC's own colors
+          crudini --set "$HOME/.config/keepassxc/keepassxc.ini" GUI ApplicationTheme classic
           crudini --set "$HOME/.config/obs-studio/global.ini" Appearance Theme com.obsproject.Catppuccin.Mocha
           crudini --set "$HOME/.config/ZapZap/ZapZap.conf" custom 'global\css\enabled' true
 
