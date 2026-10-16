@@ -73,6 +73,7 @@
             ./modules/theme.nix
             ./modules/catppuccin.nix
             ./modules/niri.nix
+            ./modules/waybar.nix
             ./modules/packages.nix
             ./hosts/${name}/configuration.nix
             { networking.hostName = name; }

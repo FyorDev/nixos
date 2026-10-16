@@ -93,7 +93,6 @@ in
           firefox.enable = false;
           gtk.icon.enable = false;
           cursors.enable = false;
-          waybar.mode = "createLink";
         };
 
         # modules that only theme what is enabled through home-manager
