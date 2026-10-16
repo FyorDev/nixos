@@ -3,6 +3,7 @@
   imports = [ ./hardware-configuration.nix ];
 
   hostLabel = "Asus TUF Gaming X570-PLUS (WI-FI)";
+  mainOutput = "HDMI-A-1";
 
   user = {
     name = "fyor";

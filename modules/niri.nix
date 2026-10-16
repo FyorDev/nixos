@@ -1,4 +1,7 @@
 { config, ... }:
+let
+  inherit (config) mainOutput;
+in
 {
   home-manager.users.${config.user.name} =
     {
@@ -81,6 +84,24 @@
         '';
       };
 
+      startup-apps = pkgs.writeShellApplication {
+        name = "startup-apps";
+        runtimeInputs = with pkgs; [
+          jq
+          coreutils
+          gnugrep
+        ];
+        text = builtins.readFile ../config/niri/startup-apps.sh;
+      };
+
+      chatAppIds = [
+        "spotify"
+        "vesktop"
+        "com.rtosta.zapzap"
+        "signal"
+        "org.keepassxc.KeePassXC"
+      ];
+
       numbered = concatMap (i: [
         (nameValuePair "Mod+${toString i}" { action.focus-workspace = i; })
         (nameValuePair "Mod+Ctrl+${toString i}" { action.move-column-to-workspace = i; })
@@ -140,7 +161,21 @@
         prefer-no-csd = true;
         screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
 
+        workspaces."01-chat" = {
+          name = "chat";
+          open-on-output = mainOutput;
+        };
+
+        spawn-at-startup = [
+          { command = [ (lib.getExe startup-apps) ] ++ lib.optional (mainOutput != null) mainOutput; }
+        ];
+
         window-rules = [
+          {
+            matches = map (id: { app-id = "^${lib.escapeRegex id}$"; }) chatAppIds;
+            open-on-workspace = "chat";
+            open-focused = false;
+          }
           {
             matches = [ { app-id = ''^org\.wezfurlong\.wezterm$''; } ];
             default-column-width = { };

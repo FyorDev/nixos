@@ -83,6 +83,11 @@
                   type = types.str;
                   description = "Host label shown by fastfetch";
                 };
+                mainOutput = mkOption {
+                  type = types.nullOr types.str;
+                  default = null;
+                  description = "Monitor that is focused at login and holds the chat workspace";
+                };
                 user = {
                   name = mkOption {
                     type = types.str;
