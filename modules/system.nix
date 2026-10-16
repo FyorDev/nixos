@@ -254,6 +254,7 @@ in
 
   # copied if it doesn't exist
   systemd.tmpfiles.rules = [
+    "d /home/${config.user.name}/source 0755 ${config.user.name} users -"
     "C /var/lib/pentablet/conf/xppen/config.xml - - - - ${../config/xppen/config.xml}"
     "z /var/lib/pentablet/conf/xppen/config.xml 0666 - - -"
   ];
