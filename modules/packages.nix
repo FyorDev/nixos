@@ -264,7 +264,7 @@ let
       icon = "f008";
       packages = [
         kdePackages.kdenlive
-        davinci-resolve # run with nvidia-offload on legion
+        # davinci-resolve # run with nvidia-offload on legion, hash mismatch in pinned nixpkgs
         obs-studio
       ];
     }

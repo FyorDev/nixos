@@ -225,7 +225,7 @@ in
               exec ${mcps.obs}/bin/obs-studio-mcp
             ''
           );
-          davinci-resolve.command = "${mcps."davinci-resolve"}/bin/davinci-resolve-mcp";
+          # davinci-resolve.command = "${mcps."davinci-resolve"}/bin/davinci-resolve-mcp";
           nmap.command = "${mcps.nmap}/bin/nmap-mcp";
           blender = {
             command = "${blenderMcp}/bin/mcp-for-blender";
