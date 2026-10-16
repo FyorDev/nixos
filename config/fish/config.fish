@@ -59,3 +59,26 @@ end
 if status is-interactive
     fastfetch
 end
+
+# Repaint the prompt when the git status of the current directory changes, so
+# it stays live while typing. A watcher per shell signals it.
+if status is-interactive
+    function __git_live_repaint --on-signal USR1
+        commandline -f repaint 2>/dev/null
+    end
+
+    command sh -c '
+        shell=$1
+        last=
+        while kill -0 "$shell" 2>/dev/null; do
+            cwd=$(readlink "/proc/$shell/cwd") || exit
+            now=$(GIT_OPTIONAL_LOCKS=0 git -C "$cwd" status --porcelain=v1 --branch 2>/dev/null | cksum)
+            if [ -n "$last" ] && [ "$now" != "$last" ]; then
+                kill -USR1 "$shell"
+            fi
+            last=$now
+            sleep 1
+        done
+    ' sh $fish_pid &
+    disown
+end
