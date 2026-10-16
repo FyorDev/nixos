@@ -9,17 +9,7 @@ let
   insomnium = pkgs.callPackage ../pkgs/insomnium.nix { };
   claude-desktop = pkgs.callPackage ../pkgs/claude-desktop.nix { };
   inky = pkgs.callPackage ../pkgs/inky.nix { };
-  # the renderer Media thread traps on NVIDIA under wayland with hardware video decoding
-  signal-desktop = pkgs.symlinkJoin {
-    name = "signal-desktop";
-    inherit (pkgs.signal-desktop) meta;
-    paths = [ pkgs.signal-desktop ];
-    nativeBuildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-      wrapProgram $out/bin/signal-desktop \
-        --add-flags "--disable-features=AcceleratedVideoDecodeLinuxGL,AcceleratedVideoDecodeLinuxZeroCopyGL,VaapiVideoDecoder"
-    '';
-  };
+  signal-desktop = pkgs.callPackage ../pkgs/signal-catppuccin.nix { };
   fgj = pkgs.callPackage ../pkgs/fgj.nix { };
   curseforge = pkgs.callPackage ../pkgs/curseforge.nix { };
   zotify = pkgs.callPackage ../pkgs/zotify.nix { };
@@ -296,7 +286,7 @@ let
         firefox
         firefox-plain # without marionette
         chromium
-        signal-desktop
+        signal-desktop # signal custom themed
         vesktop # discord
         zapzap # whatsapp
         qbittorrent

@@ -49,6 +49,7 @@ let
     rev = "de5e3643796afaedb4121cebdec39182ed0646ef";
     hash = "sha256-HC+nknnnOhtYU3XP8k2tlC7QwSgX2sViZHRMa5E0XYk=";
   };
+  zapzapCss = pkgs.callPackage ../pkgs/zapzap-catppuccin.nix { inherit flavor accent; };
 in
 {
   # seeded into VSCode settings.json by applications.nix
@@ -178,9 +179,10 @@ in
             run mv "$tmp" "$file"
           }
 
-          run mkdir -p "$HOME/.config/keepassxc" "$HOME/.config/obs-studio"
+          run mkdir -p "$HOME/.config/keepassxc" "$HOME/.config/obs-studio" "$HOME/.config/ZapZap"
           crudini --set "$HOME/.config/keepassxc/keepassxc.ini" GUI ApplicationTheme auto
           crudini --set "$HOME/.config/obs-studio/global.ini" Appearance Theme com.obsproject.Catppuccin.Mocha
+          crudini --set "$HOME/.config/ZapZap/ZapZap.conf" custom 'global\css\enabled' true
 
           setkey "$HOME/.config/kritarc" Theme "Catppuccin Mocha"
           setkey "$HOME/.config/${ghidraDir}/preferences" Theme 'File\:'"$HOME/.config/${ghidraDir}/themes/catppuccin-mocha.theme"
@@ -224,6 +226,7 @@ in
           dataFile = {
             # Krita lists colour schemes found here, pick it in Settings > General > Window
             "color-schemes/CatppuccinMocha.colors".source = ../config/krita/CatppuccinMocha.colors;
+            "ZapZap/customizations/global/css/catppuccin-${flavor}-${accent}.css".source = zapzapCss;
             # ImHex, pick it in Extras > Settings > Interface > Color Theme
             "imhex/themes/catppuccin-mocha.json".source = pkgs.fetchurl {
               url = "https://raw.githubusercontent.com/catppuccin/imhex/cbac7a79c9ef707efdcc9acfa65e30ca09a61b39/themes/catppuccin-mocha.json";

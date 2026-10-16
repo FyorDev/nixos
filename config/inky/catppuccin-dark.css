@@ -1,0 +1,200 @@
+.window.dark #main,
+.window.dark #editor,
+.window.dark #editor .ace_gutter-layer,
+.window.dark .split {
+    background-color: #1e1e2e;
+}
+
+.window.dark #toolbar {
+    background-color: #11111b;
+    border-bottom: #11111b;
+}
+
+.window.dark #main .sidebar,
+.window.dark #main .sidebar .footer {
+    background-color: #181825;
+}
+
+.window.dark h1.title {
+    color: #cdd6f4;
+}
+
+
+.window.dark #main .sidebar .filename,
+.window.dark #main .sidebar .footer .add-include-button,
+.window.dark #main .sidebar .footer .new-include-form h5 {
+    color: #a6adc8;
+}
+
+.window.dark #main .sidebar .nav-group-item.active {
+    background: #313244;
+}
+
+.window.dark #main .sidebar .nav-group-item.active .filename {
+    color: #cdd6f4;
+}
+
+.window.dark #main .sidebar .nav-group-item.nav-tooltip {
+    color: #7f849c;
+}
+
+.window.dark #toolbar .button:hover .icon {
+    color: #bac2de;
+}
+
+.window.dark #toolbar .button.selected .icon {
+    color: #cdd6f4;
+}
+
+/* e.g. filename input */
+.window.dark #main .sidebar .footer input {
+    background: #313244;
+    border: 1px solid #a6adc8;
+    color: #a6adc8;
+}
+
+.window.dark #main .sidebar .footer .checkbox {
+    color: #a6adc8;
+}
+
+.window.dark #toolbar div.issuesSummary .issueCount {
+    color: #a6adc8;
+}
+
+.window.dark #main .sidebar .footer {
+    border-top: 1px solid #1e1e2e;
+}
+
+
+.window.dark .ace_editor .ace_marker-layer .ace_selection {
+    background-color: rgba(203, 166, 247, 0.30);
+}
+
+.window.dark .ace_editor .ace_marker-layer .ace_selected-word {
+    background-color: rgba(203, 166, 247, 0.20);
+    border-color: #b4befe;
+}
+
+.window.dark #editor,
+.window.dark #player,
+.window.dark .ace_editor .ace_cursor {
+    color: #cdd6f4;
+}
+
+.window.dark .ace_editor .ace_indent-guide {
+    opacity: .1;
+}
+
+.window.dark .ace_editor .ace_marker-layer .ace_active-line {
+    background-color: rgba(205, 214, 244, 0.06);
+}
+
+.window.dark #player hr {
+    border-top-color: #45475a;
+}
+
+.window.dark #player p.choice a:hover {
+    color: #bac2de;
+}
+
+
+.window.dark #player .innerText p.customInstruction {
+    border-top-color: #f38ba8;
+}
+
+.window.dark #editor .ace-error {
+    background: rgba(243, 139, 168, 0.25)
+}
+
+.window.dark #editor .ace_todo,
+.window.dark #editor .ace-todo {
+    background: #f9e2af;
+    color: #1e1e2e;
+}
+
+.window.dark #editor .ace_warning,
+.window.dark #editor .ace-warning {
+    background: rgba(137, 180, 250, 0.25);
+}
+
+.window.dark .ace_editor span.ace_flow.ace_declaration,
+.window.dark .ace_editor span.ace_divert,
+.window.dark .ace_editor span.ace_choice.ace_label,
+.window.dark .ace_editor span.ace_gather.ace_label,
+.window.dark .ace_editor span.ace_glue,
+.window.dark .ace_editor span.ace_include,
+.window.dark .ace_editor span.ace_external {
+    color:#89b4fa;
+}
+
+.window.dark .ace_editor span.ace_choice.ace_bullets,
+.window.dark .ace_editor span.ace_choice.ace_weaveBracket,
+.window.dark .ace_editor span.ace_gather.ace_bullets {
+    color: #f38ba8;
+}
+
+.window.dark .ace_editor span.ace_var-decl,
+.window.dark .ace_editor span.ace_list-decl {
+    color: #f38ba8;
+}
+.window.dark .ace_editor span.ace_logic:not(.ace_innerContent) {
+    color:#a6e3a1;
+}
+
+.window.dark #main.hideTags .ace_editor span.ace_tag {
+    color: #1e1e2e;
+}
+
+
+/* Custom instructions, e.g. >>> */
+.window.dark .window.contrast .ace_editor span.ace_customInstruction {
+    color: #f38ba8;
+}
+
+.window.dark ::-webkit-scrollbar {
+    width: .75rem;
+    background: #1e1e2e;
+    border-left: 1px solid #313244;
+  }
+  
+.window.dark ::-webkit-scrollbar-thumb {
+    background: #313244;
+}
+
+.window.dark .sidebar .nav-wrapper {
+    border-left: 1px solid #1e1e2e;
+}
+
+.window.dark .sidebar .nav-wrapper::-webkit-scrollbar-thumb {
+    background: #313244;
+}
+
+/* Catppuccin Mocha additions: things the stock dark theme leaves at defaults */
+.window.dark #editor .ace_gutter {
+    color: #6c7086;
+}
+
+.window.dark #editor .ace_gutter-active-line {
+    background-color: #313244;
+    color: #cdd6f4;
+}
+
+.window.dark .ace-tm .ace_comment {
+    color: #6c7086;
+}
+
+.window.dark .ace_editor span.ace_tag {
+    color: #9399b2;
+}
+
+.window.dark .ace_editor span.ace_customInstruction {
+    color: #fab387;
+}
+
+.window.dark #editor .ace_cursor {
+    color: #f5e0dc;
+}
+
+.window.dark ::selection {
+    background: rgba(203, 166, 247, 0.30);
+}

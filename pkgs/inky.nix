@@ -122,6 +122,15 @@ stdenv.mkDerivation rec {
       --prefix XDG_DATA_DIRS : "${gtk3}/share/gsettings-schemas/${gtk3.name}:${gsettings-desktop-schemas}/share/gsettings-schemas/${gsettings-desktop-schemas.name}"
     asar extract-file $out/opt/inky/resources/app.asar renderer/about/icon256.png
     install -Dm644 icon256.png $out/share/icons/hicolor/256x256/apps/inky.png
+
+    # Catppuccin Mocha replaces the stock Dark stylesheet and Dark becomes the
+    # default, Inky has no custom theme setting
+    chmod -R u+w $out/opt/inky/resources
+    asar extract $out/opt/inky/resources/app.asar app-src
+    cp ${../config/inky/catppuccin-dark.css} app-src/renderer/dark.css
+    substituteInPlace app-src/main-process/projectWindow.js \
+      --replace-fail "theme:'light'" "theme:'dark'"
+    asar pack app-src $out/opt/inky/resources/app.asar --unpack-dir "main-process/ink"
     runHook postInstall
   '';
 
