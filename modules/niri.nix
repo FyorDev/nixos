@@ -121,8 +121,8 @@
             { proportion = 0.66667; }
           ];
           default-column-width.proportion = 0.5;
-          focus-ring.width = 4;
-          border.width = 4;
+          focus-ring.width = 2;
+          border.width = 2;
           shadow = {
             softness = 30;
             spread = 5;
@@ -134,6 +134,8 @@
           };
           struts = { };
         };
+
+        hotkey-overlay.skip-at-startup = true;
 
         prefer-no-csd = true;
         screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";

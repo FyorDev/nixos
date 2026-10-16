@@ -18,6 +18,7 @@ let
     mauve = "#cba6f7";
     surface1 = "#45475a";
     base = "#1e1e2e";
+    mantle = "#181825";
     crust = "#11111b";
   };
   hex = name: colors.${name};
@@ -122,11 +123,11 @@ in
             layout = {
               focus-ring = {
                 active.color = hex "mauve";
-                inactive.color = hex "surface1";
+                inactive.color = hex "mantle";
               };
               border = {
                 active.color = hex "mauve";
-                inactive.color = hex "surface1";
+                inactive.color = hex "mantle";
               };
             };
             overview.backdrop-color = hex "crust";
