@@ -7,6 +7,9 @@
   ...
 }:
 let
+  firefoxThemeId = "{76aabc99-c1a8-4c1e-832b-d4f2941d5a7a}";
+  spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+
   flavor = "mocha";
   accent = "mauve";
 
@@ -31,6 +34,18 @@ let
   blenderVersion = lib.versions.majorMinor pkgs.blender.version;
 in
 {
+  # seeded into VSCode settings.json by applications.nix
+  _module.args.catppuccinVscodeSettings = {
+    "workbench.colorTheme" = "Catppuccin Mocha";
+    "workbench.iconTheme" = "catppuccin-mocha";
+    "catppuccin.accentColor" = accent;
+  };
+
+  programs.spicetify = {
+    theme = spicePkgs.themes.catppuccin;
+    colorScheme = flavor;
+  };
+
   catppuccin = {
     enable = true;
     autoEnable = true;
@@ -65,6 +80,33 @@ in
           enableFishIntegration = false;
         };
         cava.enable = true;
+
+        firefox = {
+          policies.ExtensionSettings.${firefoxThemeId} = {
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/catppuccin-mocha-mauve-git/latest.xpi";
+            installation_mode = "normal_installed";
+          };
+          profiles.default.settings."extensions.activeThemeID" = firefoxThemeId;
+        };
+
+        vscode.profiles.default.extensions = with pkgs.vscode-extensions.catppuccin; [
+          catppuccin-vsc
+          catppuccin-vsc-icons
+        ];
+
+        niri.settings = {
+          layout = {
+            focus-ring = {
+              active.color = hex "mauve";
+              inactive.color = hex "surface1";
+            };
+            border = {
+              active.color = hex "mauve";
+              inactive.color = hex "surface1";
+            };
+          };
+          overview.backdrop-color = hex "crust";
+        };
       };
 
       # GTK 3 and 4 (libadwaita and gnome apps), icons with Catppuccin folders
@@ -96,20 +138,6 @@ in
         enable = true;
         platformTheme.name = "kvantum";
         style.name = "kvantum";
-      };
-
-      programs.niri.settings = {
-        layout = {
-          focus-ring = {
-            active.color = hex "mauve";
-            inactive.color = hex "surface1";
-          };
-          border = {
-            active.color = hex "mauve";
-            inactive.color = hex "surface1";
-          };
-        };
-        overview.backdrop-color = hex "crust";
       };
 
       xdg = {

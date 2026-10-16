@@ -70,7 +70,6 @@ in
                 installation_mode = "normal_installed";
               })
               {
-                "{76aabc99-c1a8-4c1e-832b-d4f2941d5a7a}" = "catppuccin-mocha-mauve-git";
                 "uBlock0@raymondhill.net" = "ublock-origin";
                 "{7a7a4a92-a2a0-41d1-9fd7-1e92480d612d}" = "styl-us";
                 "keepassxc-browser@keepassxc.org" = "keepassxc-browser";
@@ -96,7 +95,6 @@ in
             ];
           };
           settings = {
-            "extensions.activeThemeID" = "{76aabc99-c1a8-4c1e-832b-d4f2941d5a7a}"; # Catppuccin Mocha - Mauve
             "extensions.autoDisableScopes" = 0; # enable the add-ons above without asking
             "toolkit.legacyUserProfileCustomizations.stylesheets" = true; # load userContent.css
             # restore the previous tabs on start

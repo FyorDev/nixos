@@ -4,18 +4,19 @@
   inputs,
   lib,
   pkgs,
+  catppuccinVscodeSettings,
   ...
 }:
 let
   vscodeSettings = pkgs.writeText "vscode-settings.json" (
-    builtins.toJSON {
-      "workbench.colorTheme" = "Catppuccin Mocha";
-      "workbench.iconTheme" = "catppuccin-mocha";
-      "catppuccin.accentColor" = "mauve";
-      "editor.fontFamily" = "'JetBrainsMono Nerd Font'";
-      "terminal.integrated.fontFamily" = "'JetBrainsMono Nerd Font'";
-      "window.titleBarStyle" = "custom";
-    }
+    builtins.toJSON (
+      catppuccinVscodeSettings
+      // {
+        "editor.fontFamily" = "'JetBrainsMono Nerd Font'";
+        "terminal.integrated.fontFamily" = "'JetBrainsMono Nerd Font'";
+        "window.titleBarStyle" = "custom";
+      }
+    )
   );
 
   wl-uinput-proxy = pkgs.callPackage ../pkgs/wl-uinput-proxy.nix { };
@@ -148,8 +149,6 @@ in
                 marketplace = (pkgs.nix-vscode-extensions.forVSCodeVersion pkgs.vscode.version).vscode-marketplace;
               in
               [
-                nixpkgs.catppuccin.catppuccin-vsc
-                nixpkgs.catppuccin.catppuccin-vsc-icons
                 nixpkgs.anthropic.claude-code
                 nixpkgs.fill-labs.dependi
                 nixpkgs.geequlim.godot-tools
