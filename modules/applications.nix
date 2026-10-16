@@ -21,6 +21,20 @@ let
 
   wl-uinput-proxy = pkgs.callPackage ../pkgs/wl-uinput-proxy.nix { };
 
+  # swaylock does not signal KeePassXC, which only relocks on lock itself
+  lock-screen = pkgs.writeShellApplication {
+    name = "lock-screen";
+    runtimeInputs = [
+      pkgs.keepassxc
+      pkgs.procps
+      pkgs.swaylock
+    ];
+    text = ''
+      if pgrep -x keepassxc >/dev/null; then keepassxc --lock; fi
+      exec swaylock "$@"
+    '';
+  };
+
   obsProfile = "Untitled";
   obsSettings = {
     "user.ini" = {
@@ -64,6 +78,8 @@ let
     );
 in
 {
+  environment.systemPackages = [ lock-screen ];
+
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
@@ -81,6 +97,16 @@ in
             dir="$HOME/.config/obs-studio"
             run mkdir -p "$HOME/Videos/obs" "$dir/basic/profiles/${obsProfile}"
             ${lib.concatStringsSep "\n" (lib.mapAttrsToList obsSetIni obsSettings)}
+          '';
+
+          # database stays open until the screen locks or the session ends
+          keepassxcLock = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+            ini="$HOME/.config/keepassxc/keepassxc.ini"
+            run mkdir -p "$(dirname "$ini")"
+            run touch "$ini"
+            run ${pkgs.crudini}/bin/crudini --set "$ini" Security LockDatabaseIdle false
+            run ${pkgs.crudini}/bin/crudini --set "$ini" Security LockDatabaseMinimize false
+            run ${pkgs.crudini}/bin/crudini --set "$ini" Security LockDatabaseScreenLock true
           '';
 
           vscodeSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -121,10 +147,6 @@ in
           mpv.enable = true;
           zathura.enable = true;
           imv.enable = true;
-          waybar = {
-            enable = true;
-            systemd.enable = true;
-          };
           vesktop = {
             enable = true;
             settings = {
@@ -190,6 +212,7 @@ in
             settings = {
               anchor = "top-center";
               default-timeout = 3000;
+              "mode=do-not-disturb".invisible = 1;
             };
           };
           blueman-applet.enable = true;
@@ -199,7 +222,7 @@ in
             timeouts = [
               {
                 timeout = 900;
-                command = "${pkgs.swaylock}/bin/swaylock -f";
+                command = "${lib.getExe lock-screen} -f";
               }
             ];
           };

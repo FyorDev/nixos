@@ -202,8 +202,8 @@
               action = spawn "hyprpicker" "--autocopy";
             };
             "Super+Alt+L" = {
-              hotkey-overlay.title = "Lock the Screen: swaylock";
-              action = spawn "swaylock";
+              hotkey-overlay.title = "Lock the Screen: lock-screen";
+              action = spawn "lock-screen";
             };
             "Super+Alt+S" = {
               allow-when-locked = true;
