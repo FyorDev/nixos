@@ -8,12 +8,12 @@ set -gx EZA_COLORS 'ur=92:uw=92:ux=92;1:ue=31;1:gr=92:gw=92:gx=31;1:tr=92:tw=92:
 # start claude with rest of args as a string
 function haiku; claude --model haiku (string join " " $argv); end
 function sonnet; claude --model sonnet (string join " " $argv); end
-function opus; claude --model opus-5 (string join " " $argv); end
-function fable; claude --model fable-5 (string join " " $argv); end
+function opus; claude --model opus (string join " " $argv); end
+function fable; claude --model fable (string join " " $argv); end
 
 # one shot haiku, prints markdown
 function huh
-    claude -p --model claude-haiku-4-5-20251001 (string join " " $argv) | glow -s dark - 2>/dev/null
+    claude -p --model haiku (string join " " $argv) | glow -s dark - 2>/dev/null
 end
 
 # cowsay nerd
