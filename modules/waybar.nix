@@ -45,6 +45,13 @@ let
       procps
     ]
   );
+  autolock = scriptFile "autolock" (
+    with pkgs;
+    [
+      systemd
+      procps
+    ]
+  );
   clockFace = scriptFile "clock-face" (
     with pkgs;
     [
@@ -89,6 +96,7 @@ in
           modules-right = [
             "battery"
             "tray"
+            "custom/autolock"
             "custom/notifications"
             "custom/power"
           ];
@@ -180,6 +188,18 @@ in
             tooltip-format = "{timeTo}";
           };
           tray.spacing = 10;
+          "custom/autolock" = {
+            exec = autolock;
+            return-type = "json";
+            interval = "once";
+            signal = 10;
+            format = "{icon}";
+            format-icons = {
+              on = glyph "f023";
+              off = glyph "f09c";
+            };
+            on-click = "${autolock} toggle";
+          };
           "custom/notifications" = {
             exec = dnd;
             return-type = "json";
@@ -258,6 +278,10 @@ in
 
           #tray > .passive { -gtk-icon-effect: dim; }
           #tray > .needs-attention { -gtk-icon-effect: highlight; }
+
+          #custom-autolock { color: @accent; }
+          #custom-autolock.off { color: @overlay0; }
+          #custom-autolock:hover { background: @surface0; }
 
           #custom-notifications { color: @accent; }
           #custom-notifications.dnd { color: @overlay0; }

@@ -36,6 +36,9 @@ nixos-enter --root /mnt -c 'chown -R <user>:users /home/<user>/.ssh && chmod 700
 reboot
 ```
 
+TODO: remove once Term is public
+Also put the ssh key on the install usb!!!
+
 Rebuild with `just switch`, or force pull and rebuild with `just sync`.
 
 Add `background.png` or `background.jpg` to the root and rebuild.
