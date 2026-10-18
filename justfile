@@ -27,19 +27,23 @@ update:
 check:
     nix flake check --no-build path:.
 
-# Format nix, markdown, shell, just files
+# Format nix, markdown, shell, toml, json, just files
 fmt:
     git ls-files -z '*.nix' | xargs -0 -r nixfmt
     git ls-files -z '*.md' | xargs -0 -r rumdl fmt --disable MD013,MD028
     git ls-files -z '*.sh' '.githooks/*' | xargs -0 -r shfmt -w
+    git ls-files -z '*.toml' | xargs -0 -r taplo fmt
+    git ls-files -z '*.json' '*.jsonc' | xargs -0 -r prettier --write
     just --fmt
 
-# Lint nix, markdown, shell files
+# Lint nix, markdown, shell, toml, json files
 lint:
     statix check .
     deadnix --fail .
     git ls-files -z '*.md' | xargs -0 -r rumdl check --disable MD013,MD028
     git ls-files -z '*.sh' '.githooks/*' | xargs -0 -r shellcheck
+    git ls-files -z '*.toml' | xargs -0 -r taplo check
+    git ls-files -z '*.json' '*.jsonc' | xargs -0 -r prettier --check
 
 # Preview changelog since last version
 changelog:

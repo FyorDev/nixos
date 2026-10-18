@@ -37,6 +37,20 @@ if [ -n "$STAGED_NIX" ]; then
 	echo "$STAGED_NIX" | xargs deadnix --fail
 fi
 
+# Format toml files with taplo
+STAGED_TOML=$(git diff --cached --name-only --diff-filter=ACMR -- '*.toml')
+if [ -n "$STAGED_TOML" ]; then
+	echo "$STAGED_TOML" | xargs taplo fmt
+	echo "$STAGED_TOML" | xargs git add || exit 1
+fi
+
+# Format json files with prettier
+STAGED_JSON=$(git diff --cached --name-only --diff-filter=ACMR -- '*.json' '*.jsonc')
+if [ -n "$STAGED_JSON" ]; then
+	echo "$STAGED_JSON" | xargs prettier --write
+	echo "$STAGED_JSON" | xargs git add || exit 1
+fi
+
 # No >50MB files outside of LFS
 git diff --cached --name-only --diff-filter=ACMR | while read -r file; do
 	[ -f "$file" ] || continue

@@ -207,6 +207,8 @@ let
         nixd
         nixfmt
         statix
+        taplo # TOML
+        prettier # JSON
         rustup # Rust, also manages rust-analyzer
         sccache # shared compiler cache
         mold # fast linker
