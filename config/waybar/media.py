@@ -60,8 +60,9 @@ state = {
     "bpm": None, "beat": None, "levels": [0] * BARS,
 }
 lock = threading.Lock()
-tmp = Path(tempfile.gettempdir())
-collapsed = Path(os.environ.get("XDG_RUNTIME_DIR", tmp)) / "waybar-media-collapsed"
+# runtime dir is cleaned at logout unlike /tmp
+tmp = Path(os.environ.get("XDG_RUNTIME_DIR", tempfile.gettempdir()))
+collapsed = tmp / "waybar-media-collapsed"
 
 
 def run(*args, timeout=2):
