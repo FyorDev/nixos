@@ -276,6 +276,7 @@ let
         # TODO: re-enable once vtk builds in nixpkgs
         # freecad
         kicad
+        openscad-unstable
         prusa-slicer
         qidi-studio
       ];
