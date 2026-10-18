@@ -37,6 +37,12 @@
         ProxyJump blahaj
         User fyor
         ConnectTimeout 60
+
+      Host legion
+        HostName 192.168.178.178
+        ProxyJump blahaj
+        User fyor
+        ConnectTimeout 60
     '';
     nh = {
       enable = true;
