@@ -29,8 +29,14 @@
         ForwardAgent yes
 
       Host blahaj
-        HostName 192.168.178.15
+        HostName blahajresidence.nl
         User fyor
+
+      Host asus
+        HostName 192.168.178.51
+        ProxyJump blahaj
+        User fyor
+        ConnectTimeout 60
     '';
     nh = {
       enable = true;
