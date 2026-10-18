@@ -110,7 +110,13 @@ in
     {
       home.packages = [ screenshot-ocr ];
 
-      # nwg-displays writes monitor.kdl
+      # nwg-displays writes monitor.kdl, niri errors if it did not run yet
+      home.activation.niriMonitorKdl = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        dir="${config.xdg.configHome}/niri"
+        run mkdir -p "$dir"
+        [ -e "$dir/monitor.kdl" ] || run touch "$dir/monitor.kdl"
+      '';
+
       xdg.configFile.niri-config.source = lib.mkForce (
         pkgs.writeText "config.kdl" ''
           include "monitor.kdl"
