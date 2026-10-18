@@ -45,7 +45,21 @@ in
       inputs.niri.overlays.niri
       inputs.rust-overlay.overlays.default
       inputs.nix-vscode-extensions.overlays.default
-      (final: _prev: {
+      (final: prev: {
+        # show webp in Nautilus
+        # sushi wrapper pins GDK_PIXBUF_MODULE_FILE to the librsvg cache only
+        sushi = prev.sushi.overrideAttrs (old: {
+          preFixup = (old.preFixup or "") + ''
+            gappsWrapperArgs+=(--set GDK_PIXBUF_MODULE_FILE "${
+              final.gnome._gdkPixbufCacheBuilder_DO_NOT_USE {
+                extraLoaders = [
+                  final.librsvg
+                  final.webp-pixbuf-loader
+                ];
+              }
+            }")
+          '';
+        });
         term = final.callPackage ../pkgs/term.nix {
           src = inputs.term;
           craneLib = (inputs.crane.mkLib final).overrideToolchain (

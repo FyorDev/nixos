@@ -151,6 +151,7 @@ let
         glycin-loaders # loaders
         webp-pixbuf-loader # webp
         gnome-epub-thumbnailer # epub
+        gnome-font-viewer # tff, otf
 
         file-roller # archive manager
         gnome-disk-utility # disks, smart and disk images
