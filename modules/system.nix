@@ -236,7 +236,16 @@ in
   };
 
   security = {
-    polkit.enable = true; # privilege prompt for mounting drives etc
+    polkit = {
+      enable = true; # no mount privilege prompt
+      extraConfig = ''
+        polkit.addRule(function(action, subject) {
+          if (action.id == "org.freedesktop.udisks2.filesystem-mount-system" && subject.local && subject.active) {
+            return polkit.Result.YES;
+          }
+        });
+      '';
+    };
     rtkit.enable = true; # no audio stuttering
     # WineASIO locks its memory, the default 8 MiB memlock limit makes FL
     # Studio's own allocations fail once the driver loads
