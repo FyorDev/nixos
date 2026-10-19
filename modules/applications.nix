@@ -228,6 +228,7 @@ in
           };
         };
 
+        # not started at login, the waybar button toggles it
         systemd.user.services.lan-mouse = {
           Unit = {
             Description = "Lan Mouse";
@@ -238,7 +239,6 @@ in
             ExecStart = "${lib.getExe wl-uinput-proxy} ${lib.getExe pkgs.lan-mouse} daemon";
             Restart = "on-failure";
           };
-          Install.WantedBy = [ "graphical-session.target" ];
         };
       };
   };

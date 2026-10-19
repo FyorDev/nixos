@@ -45,7 +45,7 @@ let
       procps
     ]
   );
-  autolock = scriptFile "autolock" (
+  service = scriptFile "service" (
     with pkgs;
     [
       systemd
@@ -62,6 +62,36 @@ let
 
   playerctl = lib.getExe pkgs.playerctl;
   glyph = code: builtins.fromJSON ''"\u${code}"'';
+
+  # button that starts and stops a systemd user service
+  serviceToggle =
+    {
+      unit,
+      signal,
+      on,
+      off,
+    }:
+    let
+      exec = "${service} ${
+        lib.escapeShellArgs [
+          unit
+          (toString signal)
+          on.tip
+          off.tip
+        ]
+      }";
+    in
+    {
+      inherit exec signal;
+      return-type = "json";
+      interval = "once";
+      format = "{icon}";
+      format-icons = {
+        on = glyph on.icon;
+        off = glyph off.icon;
+      };
+      on-click = "${exec} toggle";
+    };
 in
 {
   home-manager.users.${config.user.name} =
@@ -96,6 +126,7 @@ in
           modules-right = [
             "battery"
             "tray"
+            "custom/lan-mouse"
             "custom/autolock"
             "custom/notifications"
             "custom/power"
@@ -188,17 +219,29 @@ in
             tooltip-format = "{timeTo}";
           };
           tray.spacing = 10;
-          "custom/autolock" = {
-            exec = autolock;
-            return-type = "json";
-            interval = "once";
-            signal = 10;
-            format = "{icon}";
-            format-icons = {
-              on = glyph "f023";
-              off = glyph "f09c";
+          "custom/lan-mouse" = serviceToggle {
+            unit = "lan-mouse";
+            signal = 11;
+            on = {
+              icon = "f245";
+              tip = "Sharing mouse and keyboard, click to turn off";
             };
-            on-click = "${autolock} toggle";
+            off = {
+              icon = "f245";
+              tip = "Lan Mouse is off, click to turn on";
+            };
+          };
+          "custom/autolock" = serviceToggle {
+            unit = "swayidle";
+            signal = 10;
+            on = {
+              icon = "f023";
+              tip = "Locks after 15 minutes idle, click to turn off";
+            };
+            off = {
+              icon = "f09c";
+              tip = "Auto lock is off, click to turn on";
+            };
           };
           "custom/notifications" = {
             exec = dnd;
@@ -279,12 +322,14 @@ in
           #tray > .passive { -gtk-icon-effect: dim; }
           #tray > .needs-attention { -gtk-icon-effect: highlight; }
 
-          #custom-autolock { color: @accent; }
-          #custom-autolock.off { color: @overlay0; }
-          #custom-autolock:hover { background: @surface0; }
-
+          #custom-lan-mouse,
+          #custom-autolock,
           #custom-notifications { color: @accent; }
+          #custom-lan-mouse.off,
+          #custom-autolock.off,
           #custom-notifications.dnd { color: @overlay0; }
+          #custom-lan-mouse:hover,
+          #custom-autolock:hover,
           #custom-notifications:hover { background: @surface0; }
 
           #custom-power { color: @red; }
