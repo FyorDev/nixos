@@ -414,6 +414,8 @@ in
     in
     {
       enable = true;
+      # no libayatana-appindicator, so no tray icon
+      spotifyPackage = pkgs.spotify.override { libayatana-appindicator = pkgs.emptyDirectory; };
       enabledExtensions = with spicePkgs.extensions; [
         adblockify
         keyboardShortcut

@@ -109,6 +109,20 @@ in
             run ${pkgs.crudini}/bin/crudini --set "$ini" Security LockDatabaseScreenLock true
           '';
 
+          # only the network and bluetooth applets belong in the bar tray
+          noTrayIcons = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+            zapzap="$HOME/.config/ZapZap/ZapZap.conf"
+            run mkdir -p "$(dirname "$zapzap")"
+            run touch "$zapzap"
+            run ${pkgs.crudini}/bin/crudini --ini-options=nospace --set "$zapzap" system tray_icon false
+
+            claude="$HOME/.config/Claude/claude_desktop_config.json"
+            if [ -e "$claude" ]; then
+              tmp=$(mktemp)
+              ${pkgs.jq}/bin/jq '.preferences.menuBarEnabled = false' "$claude" > "$tmp" && run mv "$tmp" "$claude"
+            fi
+          '';
+
           vscodeSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
             settings="$HOME/.config/Code/User/settings.json"
             if [ ! -e "$settings" ]; then
@@ -151,6 +165,7 @@ in
             enable = true;
             settings = {
               minimizeToTray = false;
+              tray = false;
               discordBranch = "stable";
             };
             vencord.settings = {
