@@ -14,11 +14,14 @@ let
 in
 {
   boot.loader = {
-    systemd-boot = {
+    efi.canTouchEfiVariables = true;
+    grub = {
       enable = true;
+      efiSupport = true;
+      device = "nodev";
+      useOSProber = true; # detect Windows
       configurationLimit = 5;
     };
-    efi.canTouchEfiVariables = true;
   };
 
   networking.networkmanager = {
