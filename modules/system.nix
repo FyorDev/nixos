@@ -272,6 +272,8 @@ in
     pam.services.greetd.enableGnomeKeyring = true; # unlock keyring at login
   };
 
+  zramSwap.enable = true; # compressed swap in RAM
+
   hardware.bluetooth.enable = true;
   hardware.keyboard.qmk.enable = true; # udev rules for flashing qmk keyboards
 
