@@ -41,6 +41,13 @@ Also put the ssh key on the install usb!!!
 
 Rebuild with `just switch`, or force pull and rebuild with `just sync`.
 
+Update Term. `just update` updates every input.
+
+```sh
+nix flake update term
+just switch
+```
+
 Add `background.png` or `background.jpg` to the root and rebuild.
 
 ## Secrets
