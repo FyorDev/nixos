@@ -28,7 +28,11 @@ in
     enable = true;
     settings.connection."ethernet.wake-on-lan" = "64";
   };
-  networking.firewall.allowedUDPPorts = [ 4242 ]; # lan-mouse
+  networking.firewall = {
+    allowedUDPPorts = [ 4242 ]; # lan-mouse
+    allowedTCPPorts = [ 8010 ]; # gnome-network-displays chromecast stream
+  };
+  services.avahi.enable = true; # gnome-network-displays finds chromecasts
 
   systemd.network.links."50-wol" = {
     matchConfig.Type = "ether";
@@ -62,6 +66,10 @@ in
               }
             }")
           '';
+        });
+        # chromecast casting: fixed stream port for the firewall, and niri's dmabuf-only screencasts
+        gnome-network-displays = prev.gnome-network-displays.overrideAttrs (old: {
+          patches = (old.patches or [ ]) ++ [ ../pkgs/gnome-network-displays-cast.patch ];
         });
         term = final.callPackage ../pkgs/term.nix {
           src = inputs.term;

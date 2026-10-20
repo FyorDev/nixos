@@ -75,6 +75,7 @@ let
         libnotify # notify-send
         xdg-utils # xdg-open and xdg-mime
         nwg-displays # monitor layout gui
+        gnome-network-displays # cast a screen to a miracast or chromecast tv
         pavucontrol # volume mixer
 
         wl-clipboard # wl-copy and wl-paste

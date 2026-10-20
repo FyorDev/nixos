@@ -1,0 +1,71 @@
+--- a/src/app/nd-window.c
++++ b/src/app/nd-window.c
+@@ -190,7 +190,18 @@
+       gst_element_link_many (src, filter, dst, NULL);
+     }
+   else
+-    gst_element_link_many (src, dst, NULL);
++    {
++      /* compositors like niri only offer dmabuf, intervideosink needs system memory */
++      GstElement *convert = gst_element_factory_make ("vapostproc", "srcconvert");
++
++      if (convert)
++        {
++          gst_bin_add (bin, convert);
++          gst_element_link_many (src, convert, dst, NULL);
++        }
++      else
++        gst_element_link_many (src, dst, NULL);
++    }
+ 
+   res = gst_element_factory_make ("intervideosrc", "screencastsrc");
+   g_object_set (res,
+--- a/src/cc/cc-ctrl.c
++++ b/src/cc/cc-ctrl.c
+@@ -389,6 +389,11 @@
+                 {
+                   GError *error = NULL;
+ 
++                  /* the receiver repeats its status, a second LOAD would interrupt the running stream */
++                  if ((ctrl->state == CC_CTRL_STATE_READY || ctrl->state == CC_CTRL_STATE_STREAMING) &&
++                      g_strcmp0 (ctrl->session_id, sessionId) == 0)
++                    return;
++
+                   g_debug ("CcCtrl: App is open");
+                   ctrl->state = CC_CTRL_STATE_APP_OPEN;
+                   ctrl->session_id = g_strdup (sessionId);
+--- a/src/cc/cc-http-server.c
++++ b/src/cc/cc-http-server.c
+@@ -198,6 +198,10 @@
+ 
+   factory = (CcMediaFactory *) self;
+ 
++  /* a cast can start the server more than once, the fixed port can only be bound once */
++  if (self->server)
++    return TRUE;
++
+   success = cc_media_factory_create_pipeline (factory);
+   if (!success)
+     {
+@@ -219,7 +223,7 @@
+                                   "simple-httpd ",
+                                   NULL);
+ 
+-  success = soup_server_listen_all (self->server, 0, 0, error);
++  success = soup_server_listen_all (self->server, 8010, 0, error);
+   if (!success)
+     {
+       g_set_error (error,
+@@ -261,7 +265,11 @@
+   self = CC_HTTP_SERVER (object);
+ 
+   if (SOUP_IS_SERVER (self->server))
+-    soup_server_remove_handler (self->server, NULL);
++    {
++      soup_server_remove_handler (self->server, NULL);
++      soup_server_disconnect (self->server);
++    }
++  g_clear_object (&self->server);
+ 
+   g_clear_pointer (&self->remote_address, g_free);
+ 
