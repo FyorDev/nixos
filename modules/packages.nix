@@ -414,8 +414,10 @@ in
     in
     {
       enable = true;
-      # no libayatana-appindicator, so no tray icon
-      spotifyPackage = pkgs.spotify.override { libayatana-appindicator = pkgs.emptyDirectory; };
+      # spotify needs the library to start, the stub keeps it out of the tray
+      spotifyPackage = pkgs.spotify.override {
+        libayatana-appindicator = pkgs.callPackage ../pkgs/appindicator-stub.nix { };
+      };
       enabledExtensions = with spicePkgs.extensions; [
         adblockify
         keyboardShortcut
