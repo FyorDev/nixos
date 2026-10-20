@@ -228,6 +228,7 @@ in
               anchor = "top-center";
               default-timeout = 3000;
               "mode=do-not-disturb".invisible = 1;
+              "app-name=Steam".invisible = 1;
             };
           };
           blueman-applet.enable = true;
