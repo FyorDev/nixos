@@ -35,7 +35,11 @@ python3Packages.buildPythonApplication {
   pythonRemoveDeps = [ "librespot" ];
 
   # librespot's generated protobuf code is too old for the protobuf in nixpkgs
-  makeWrapperArgs = [ "--set PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION python" ];
+  makeWrapperArgs = [
+    "--set"
+    "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"
+    "python"
+  ];
 
   doCheck = false;
 
