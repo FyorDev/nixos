@@ -267,7 +267,7 @@ let
       icon = "f008";
       packages = [
         kdePackages.kdenlive
-        # davinci-resolve # run with nvidia-offload on legion, hash mismatch in pinned nixpkgs
+        davinci-resolve # run with nvidia-offload on legion
         obs-studio
       ];
     }
@@ -275,8 +275,7 @@ let
       name = "CAD";
       icon = "f0ad";
       packages = [
-        # TODO: re-enable once vtk builds in nixpkgs
-        # freecad
+        freecad
         kicad
         openscad-unstable
         prusa-slicer
