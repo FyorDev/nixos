@@ -49,7 +49,14 @@ let
   };
 in
 {
-  fonts = {
+  options.wallpaper = lib.mkOption {
+    type = lib.types.nullOr lib.types.path;
+    default = background;
+    readOnly = true;
+    description = "The wallpaper, background.png or background.jpg in the repo root, if there is one";
+  };
+
+  config.fonts = {
     packages = [
       fonts.monospace.package
       fonts.sansSerif.package
@@ -76,7 +83,7 @@ in
     };
   };
 
-  home-manager.users.${config.user.name} = {
+  config.home-manager.users.${config.user.name} = {
     systemd.user.services.swaybg = lib.mkIf (background != null) {
       Unit = {
         # swap the wallpaper live

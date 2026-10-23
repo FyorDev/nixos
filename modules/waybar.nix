@@ -177,7 +177,7 @@ in
           };
           clock = {
             interval = 1;
-            format = "{:%Y %m<span color='${c.subtext0}'>_%b</span> %d<span color='${c.subtext0}'>_%a</span> %H:%M:%S}";
+            format = "{:%Y %m<span color='${c.subtext0}'>_%b</span> %d<span color='${c.subtext0}'>_%a</span> %H<span color='${c.subtext0}'>:</span>%M<span color='${c.subtext0}'>:</span>%S}";
             tooltip-format = "<tt><small>{calendar}</small></tt>";
             calendar = {
               mode = "month";
@@ -299,7 +299,10 @@ in
           #custom-media-play:hover,
           #custom-media-next:hover { color: @accent; }
           #custom-media { padding: 0 4px; }
-          #custom-media-bars { padding: 0 10px 0 4px; }
+          #custom-media-bars {
+            padding: 0 10px 0 4px;
+            color: @text;
+          }
 
           #image.clock { padding: 0 0 0 8px; }
           #clock {

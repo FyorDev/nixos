@@ -6,12 +6,6 @@
   pkgs,
   ...
 }:
-let
-  # systemd 261 deprecates niri-session calling import-environment without names
-  niriSession = pkgs.writeShellScript "niri-session" ''
-    exec ${config.programs.niri.package}/bin/niri-session "$@" 2> >(${pkgs.gnugrep}/bin/grep -v 'import-environment without a list' >&2)
-  '';
-in
 {
   boot.loader = {
     efi.canTouchEfiVariables = true;
@@ -158,21 +152,6 @@ in
       # kernel seq and is unaffected.
       wireplumber.extraConfig."51-no-alsa-midi-bridge"."wireplumber.profiles".main."monitor.alsa-midi" =
         "disabled";
-    };
-    greetd = {
-      enable = true;
-      settings.default_session = {
-        command = builtins.concatStringsSep " " [
-          "${pkgs.tuigreet}/bin/tuigreet"
-          "--time"
-          "--user ${config.user.name}"
-          "--remember"
-          "--asterisks"
-          "--greeting 'Welcome back'"
-          "--cmd ${niriSession}"
-        ];
-        user = "greeter";
-      };
     };
   };
 

@@ -21,17 +21,20 @@ let
 
   wl-uinput-proxy = pkgs.callPackage ../pkgs/wl-uinput-proxy.nix { };
 
-  # swaylock does not signal KeePassXC, which only relocks on lock itself
+  # the lock does not signal KeePassXC, which only relocks on lock itself
   lock-screen = pkgs.writeShellApplication {
     name = "lock-screen";
     runtimeInputs = [
       pkgs.keepassxc
       pkgs.procps
-      pkgs.swaylock
+      pkgs.quickshell
     ];
     text = ''
       if pgrep -x keepassxc >/dev/null; then keepassxc --lock; fi
-      exec swaylock "$@"
+      if [ "''${1:-}" = -f ]; then
+        exec qs --no-duplicate --daemonize -p /etc/xdg/quickshell/lock
+      fi
+      exec qs --no-duplicate -p /etc/xdg/quickshell/lock
     '';
   };
 
@@ -157,7 +160,6 @@ in
             };
           };
           alacritty.enable = true;
-          swaylock.enable = true;
           mpv.enable = true;
           zathura.enable = true;
           imv.enable = true;

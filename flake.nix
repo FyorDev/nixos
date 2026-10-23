@@ -71,6 +71,7 @@
             ./modules/terminal.nix
             ./modules/claude.nix
             ./modules/theme.nix
+            ./modules/login.nix
             ./modules/catppuccin.nix
             ./modules/niri.nix
             ./modules/waybar.nix
@@ -87,6 +88,11 @@
                   type = types.nullOr types.str;
                   default = null;
                   description = "Monitor that is focused at login and holds the chat workspace";
+                };
+                displayScale = mkOption {
+                  type = types.number;
+                  default = 1;
+                  description = "Display scale for the greeter";
                 };
                 user = {
                   name = mkOption {

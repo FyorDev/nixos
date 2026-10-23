@@ -61,7 +61,6 @@ let
         appimage-run # run AppImages
 
         fuzzel # launcher
-        swaylock # lockscreen
         swayidle # lock
         waybar # top bar
         mako # notifications
