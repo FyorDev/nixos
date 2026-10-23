@@ -19,9 +19,16 @@ sync:
     git reset --hard @{u}
     just switch
 
-# Update flake inputs
-update:
-    nix flake update
+# Update flake inputs, all or only the ones named
+update *inputs:
+    nix flake update --flake path:. {{ inputs }}
+
+# Remove old generations and unused store paths, and cargo builds unused for two weeks
+clean:
+    nh clean all --keep 5 --keep-since 14d
+    rm -f result
+    find ~/.cache/cargo/target -type f -atime +14 -delete
+    find ~/.cache/cargo/target -mindepth 1 -type d -empty -delete
 
 # Evaluate, don't build
 check:
