@@ -79,6 +79,11 @@ Scope {
                     height: parent.height
                 }
 
+                CaptureWidget {
+                    screen: root.screen
+                    height: parent.height
+                }
+
                 ServiceToggle {
                     height: parent.height
                     unit: "lan-mouse"

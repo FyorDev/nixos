@@ -84,6 +84,45 @@ in
         '';
       };
 
+      screenshot-annotate = pkgs.writeShellApplication {
+        name = "screenshot-annotate";
+        runtimeInputs = with pkgs; [
+          grim
+          slurp
+          swappy
+        ];
+        text = ''
+          area=$(slurp) || exit 0
+          grim -g "$area" - | swappy -f -
+        '';
+      };
+
+      # Without arguments it mirrors the focused display fullscreen onto another, or stops the
+      # mirror. Arguments are wl-present commands for the running mirror, like set-region.
+      mirror-display = pkgs.writeShellApplication {
+        name = "mirror-display";
+        runtimeInputs = with pkgs; [
+          wl-mirror
+          jq
+          procps
+          libnotify
+          config.programs.niri.package
+        ];
+        text = ''
+          if [ "$#" -gt 0 ]; then exec wl-present "$@"; fi
+          if pkill -x wl-mirror; then exit 0; fi
+
+          src=$(niri msg --json focused-output | jq -r .name)
+          dst=$(niri msg --json outputs | jq -r --arg src "$src" \
+            '[to_entries[] | select(.key != $src and .value.logical != null) | .key] | first // empty')
+          if [ -z "$dst" ]; then
+            notify-send "Mirroring" "Only one display is connected"
+            exit 0
+          fi
+          exec wl-present mirror "$src" --fullscreen-output "$dst"
+        '';
+      };
+
       encoder =
         if recordingDevice == null then
           "-c h264_nvenc"
@@ -160,7 +199,9 @@ in
     {
       home.packages = [
         screenshot-ocr
+        screenshot-annotate
         screenrecord
+        mirror-display
       ];
 
       # nwg-displays writes monitor.kdl, niri errors if it did not run yet
@@ -289,11 +330,15 @@ in
             };
             "Mod+Shift+Print" = {
               hotkey-overlay.title = "Annotate a Screenshot: swappy";
-              action = spawn-sh "grim -g \"$(slurp)\" - | swappy -f -";
+              action = spawn "screenshot-annotate";
             };
             "Shift+Print" = {
               hotkey-overlay.title = "Record an Area: wf-recorder";
               action = spawn "screenrecord";
+            };
+            "Mod+Ctrl+P" = {
+              hotkey-overlay.title = "Mirror the Display: wl-mirror";
+              action = spawn "mirror-display";
             };
             "Mod+P" = {
               hotkey-overlay.title = "Pick a Colour: hyprpicker";

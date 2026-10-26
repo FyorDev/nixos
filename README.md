@@ -85,6 +85,7 @@ just release v0.0.0 "title"
 | niri | `Mod+Print` | copy text from screen (OCR) |
 | niri | `Mod+Shift+Print` | annotate a screenshot |
 | niri | `Shift+Print` | record an area with sound, press again to stop and copy it |
+| niri | `Mod+Ctrl+P` | mirror this display on the other one, press again to stop |
 | niri | `Mod+Return` | Term |
 | niri | `Mod+T` | Term terminal |
 | niri | `Mod+B` | Firefox |

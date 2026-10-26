@@ -35,6 +35,8 @@ let
     ip = "${pkgs.iproute2}/bin/ip";
     curl = lib.getExe pkgs.curl;
     makoctl = "${pkgs.mako}/bin/makoctl";
+    pgrep = "${pkgs.procps}/bin/pgrep";
+    pkill = "${pkgs.procps}/bin/pkill";
   }
   // shared.palette;
 
