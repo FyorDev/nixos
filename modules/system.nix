@@ -194,35 +194,40 @@
     };
   };
 
-  # niri leaks VRAM on nvidia unless the driver stops holding freed buffers
-  environment.etc."nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json".text =
-    builtins.toJSON {
-      rules = [
-        {
-          pattern = {
-            feature = "procname";
-            matches = "niri";
-          };
-          profile = "Limit Free Buffer Pool On Wayland Compositors";
-        }
-      ];
-      profiles = [
-        {
-          name = "Limit Free Buffer Pool On Wayland Compositors";
-          settings = [
-            {
-              key = "GLVidHeapReuseRatio";
-              value = 0;
-            }
-          ];
-        }
-      ];
+  environment = {
+    # niri leaks VRAM on nvidia unless the driver stops holding freed buffers
+    etc."nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json".text =
+      builtins.toJSON {
+        rules = [
+          {
+            pattern = {
+              feature = "procname";
+              matches = "niri";
+            };
+            profile = "Limit Free Buffer Pool On Wayland Compositors";
+          }
+        ];
+        profiles = [
+          {
+            name = "Limit Free Buffer Pool On Wayland Compositors";
+            settings = [
+              {
+                key = "GLVidHeapReuseRatio";
+                value = 0;
+              }
+            ];
+          }
+        ];
+      };
+
+    sessionVariables = {
+      NIXOS_OZONE_WL = "1"; # electron and chromium apps use wayland
+      _JAVA_AWT_WM_NONREPARENTING = "1"; # so java swing apps don't draw blank
+      WINEDLLOVERRIDES = "winemenubuilder.exe=d"; # no wine .desktop files in the app menu
     };
 
-  environment.sessionVariables = {
-    NIXOS_OZONE_WL = "1"; # electron and chromium apps use wayland
-    _JAVA_AWT_WM_NONREPARENTING = "1"; # so java swing apps don't draw blank
-    WINEDLLOVERRIDES = "winemenubuilder.exe=d"; # no wine .desktop files in the app menu
+    # the Mixxx wrapper in hardware.ddj-flx10.package points --resource-path here
+    pathsToLink = [ "/share/mixxx" ];
   };
 
   security = {
@@ -264,8 +269,25 @@
 
   zramSwap.enable = true; # compressed swap in RAM
 
-  hardware.bluetooth.enable = true;
-  hardware.keyboard.qmk.enable = true; # udev rules for flashing qmk keyboards
+  hardware = {
+    bluetooth.enable = true;
+    keyboard.qmk.enable = true; # udev rules for flashing qmk keyboards
+    ddj-flx10.enable = true; # Mixxx fork, udev rules, settings/unlock on plug-in
+    # give Mixxx controller mappings absolute path
+    ddj-flx10.package =
+      let
+        mixxx = inputs.mixxx-flx10.packages.${pkgs.stdenv.hostPlatform.system}.mixxx-flx10;
+      in
+      pkgs.symlinkJoin {
+        name = "mixxx-flx10-wrapped";
+        paths = [ mixxx ];
+        nativeBuildInputs = [ pkgs.makeWrapper ];
+        postBuild = ''
+          wrapProgram $out/bin/mixxx \
+            --add-flags "--resource-path /run/current-system/sw/share/mixxx/"
+        '';
+      };
+  };
 
   # copied if it doesn't exist
   systemd.tmpfiles.rules = [

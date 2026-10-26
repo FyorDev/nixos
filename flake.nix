@@ -39,6 +39,10 @@
       url = "git+ssh://git@github.com/FyorDev/Term.git"; # term
       flake = false;
     };
+    mixxx-flx10 = {
+      url = "github:FyorDev/mixxx-flx10?ref=flx10/integration"; # Mixxx with Pioneer DDJ-FLX10 support
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -65,6 +69,7 @@
             inputs.catppuccin.nixosModules.catppuccin
             inputs.agenix.nixosModules.default
             inputs.spicetify-nix.nixosModules.default
+            inputs.mixxx-flx10.nixosModules.flx10
             ./modules/system.nix
             ./modules/applications.nix
             ./modules/firefox.nix
