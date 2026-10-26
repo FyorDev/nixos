@@ -51,12 +51,12 @@ if [ -n "$STAGED_JSON" ]; then
 	echo "$STAGED_JSON" | xargs git add || exit 1
 fi
 
-# No >50MB files outside of LFS
+# No >10MB files
 git diff --cached --name-only --diff-filter=ACMR | while read -r file; do
 	[ -f "$file" ] || continue
 	size=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file" 2>/dev/null)
-	if [ "$size" -gt $((50 * 1024 * 1024)) ] && ! git check-attr filter "$file" | grep -q lfs; then
-		echo "File $file is $((size / 1024 / 1024))MB (limit: 50MB) remove or use Git LFS"
+	if [ "$size" -gt $((10 * 1024 * 1024)) ]; then
+		echo "File $file is $((size / 1024 / 1024))MB (limit: 10MB)"
 		exit 1
 	fi
 done || exit 1
