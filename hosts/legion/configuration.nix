@@ -40,8 +40,35 @@
   services.upower.enable = true; # battery state
   services.power-profiles-daemon.enable = true; # profile switching with powerprofilesctl
 
-  # Needed for legion_cli
-  boot.extraModulePackages = [ config.boot.kernelPackages.lenovo-legion-module ];
-  boot.kernelModules = [ "legion-laptop" ];
+  # TODO: remove when fixed
+  boot = {
+    # TODO: remove when fixed
+    # nixpkgs wants a kmodigest certificate next to every module (NixOS/nixpkgs#571181), but
+    # these two copy their .ko by hand and ship none. Drop once they install via modules_install.
+    kernelPackages = pkgs.linuxPackages.extend (
+      _final: prev:
+      let
+        sign =
+          pkg:
+          pkg.overrideAttrs (old: {
+            nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.buildPackages.kmodigest ];
+            # after fixup, stripping would drop the appended signature
+            postFixup = (old.postFixup or "") + ''
+              for ko in $(find "$out/lib/modules" -name '*.ko'); do
+                [ -e "$ko.cer" ] || kmodigest "$ko"
+              done
+            '';
+          });
+      in
+      {
+        lenovo-legion-module = sign prev.lenovo-legion-module;
+        zenpower = sign prev.zenpower; # from nixos-hardware's common/cpu/amd/zenpower.nix
+      }
+    );
+
+    # Needed for legion_cli
+    extraModulePackages = [ config.boot.kernelPackages.lenovo-legion-module ];
+    kernelModules = [ "legion-laptop" ];
+  };
   environment.systemPackages = [ pkgs.lenovo-legion ];
 }
