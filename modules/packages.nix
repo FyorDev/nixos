@@ -257,6 +257,8 @@ let
       packages = [
         vcv-rack
         fl-studio # windows version under wine
+        config.hardware.ddj-flx10.package # Mixxx with DDJ-FLX10 support
+        nicotine-plus # soulseek
       ];
     }
     {
