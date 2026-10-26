@@ -1,6 +1,7 @@
 # Claude Code user config and MCP servers
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -8,7 +9,17 @@
 let
   fgj = pkgs.callPackage ../pkgs/fgj.nix { };
   obsPassword = config.age.secrets.obs-websocket.path;
-  mcps = pkgs.callPackage ../pkgs/mcp.nix { };
+
+  # TODO: remove when fixed
+  # The MCP servers and fastmcp still import the mcp 1.x Python SDK, nixpkgs moved to 2.x.
+  # Their Python comes from the nixpkgs-mcp input, the apps they drive stay current.
+  mcpPkgs = import inputs.nixpkgs-mcp { inherit (pkgs.stdenv.hostPlatform) system; };
+  withMcp1 =
+    f: args:
+    pkgs.callPackage f (
+      lib.intersectAttrs (lib.functionArgs f) { inherit (mcpPkgs) python3 python3Packages; } // args
+    );
+  mcps = pkgs.callPackage ../pkgs/mcp.nix { callPackage = withMcp1; };
   blenderMcp = mcps.blender;
   blenderVersion = lib.versions.majorMinor pkgs.blender.version;
   # Language server per mcp entry
@@ -177,8 +188,8 @@ in
           - Remove empty inkspace directories when done taking notes
         '';
         mcpServers = {
-          nixos.command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
-          git.command = "${pkgs.mcp-server-git}/bin/mcp-server-git";
+          nixos.command = "${mcpPkgs.mcp-nixos}/bin/mcp-nixos";
+          git.command = "${mcpPkgs.mcp-server-git}/bin/mcp-server-git";
           godot = {
             command = "${pkgs.godot-mcp}/bin/godot-mcp";
             env.GODOT_PATH = "${pkgs.godot}/bin/godot";
@@ -210,7 +221,7 @@ in
               export JAVA_HOME=${pkgs.jdk21}
               export GHIDRA_INSTALL_DIR=${pkgs.ghidra}/lib/ghidra
               export NIX_GHIDRAHOME=${pkgs.ghidra.withExtensions (e: [ e.reva ])}/lib/ghidra/Ghidra
-              exec ${pkgs.mcp-reva}/bin/mcp-reva "$@"
+              exec ${mcpPkgs.mcp-reva}/bin/mcp-reva "$@"
             ''
           );
           inkscape.command = "${mcps.inkscape}/bin/inkscape-mcp";

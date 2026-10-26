@@ -3,6 +3,8 @@
 
   inputs = {
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.zst";
+    # last nixos-unstable with the mcp 1.x Python SDK, for the MCP servers in modules/claude.nix
+    nixpkgs-mcp.url = "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1097682.02c087f3fe67/nixexprs.tar.zst";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     niri = {
       url = "github:sodiboo/niri-flake";
