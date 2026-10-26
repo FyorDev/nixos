@@ -12,6 +12,8 @@
 
   hostLabel = "Lenovo Legion 5 Pro 16ACH6H 82JQ";
   displayScale = 1.5;
+  # the AMD iGPU, NVENC would wake the dGPU
+  recordingDevice = "/dev/dri/by-path/pci-0000:06:00.0-render";
 
   user = {
     name = "fyor";

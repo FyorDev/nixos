@@ -82,9 +82,14 @@ just release v0.0.0 "title"
 | niri | `Print` | screenshot area |
 | niri | `Ctrl+Print` | screenshot screen |
 | niri | `Alt+Print` | screenshot window |
-| niri | `Mod+Shift+S` | annotate a screenshot |
-| niri | `Mod+Shift+Print` | copy text from screen (OCR) |
+| niri | `Mod+Print` | copy text from screen (OCR) |
+| niri | `Mod+Shift+Print` | annotate a screenshot |
+| niri | `Shift+Print` | record an area with sound, press again to stop and copy it |
 | niri | `Mod+Return` | Term |
 | niri | `Mod+T` | Term terminal |
 | niri | `Mod+B` | Firefox |
 | niri | `Mod+E` | Files |
+| niri | `Mod+D` | app launcher |
+| niri | `Mod+S` | app categories |
+| niri | `Super+Alt+L` | lock the screen |
+| niri | `Mod+Shift+/` | all niri shortcuts |

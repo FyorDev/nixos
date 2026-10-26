@@ -1,6 +1,6 @@
 { config, ... }:
 let
-  inherit (config) mainOutput;
+  inherit (config) mainOutput recordingDevice;
 in
 {
   home-manager.users.${config.user.name} =
@@ -84,6 +84,56 @@ in
         '';
       };
 
+      encoder =
+        if recordingDevice == null then
+          "-c h264_nvenc"
+        else
+          lib.concatStringsSep " " [
+            # wf-recorder fails on symlinked devices like the stable /dev/dri/by-path ones
+            ''-c h264_vaapi -d "$(readlink -f ${lib.escapeShellArg recordingDevice})"''
+            # its default is untagged full range, which players that ignore the range flag show
+            # darker and oversaturated
+            "-F scale_vaapi=format=nv12:out_range=limited:out_color_matrix=bt709"
+            "-p color_range=tv -p colorspace=bt709 -p color_primaries=bt709"
+          ];
+
+      screenrecord = pkgs.writeShellApplication {
+        name = "screenrecord";
+        runtimeInputs = with pkgs; [
+          wf-recorder
+          slurp
+          procps
+          coreutils
+          libnotify
+          nautilus
+          wl-clipboard
+        ];
+        text = ''
+          # a second press stops the recording, wf-recorder then finishes the file
+          if pkill -INT -x wf-recorder; then exit 0; fi
+
+          area=$(slurp) || exit 0
+          dir=$HOME/Videos/snippets
+          mkdir -p "$dir"
+          file="$dir/Screencast from $(date '+%Y-%m-%d %H-%M-%S').mp4"
+
+          notify-send "Recording" "Press the same key to stop"
+          # without a fixed rate the encoder budgets the bitrate for 90000 fps, the file timebase,
+          # and every frame comes out at the worst quality
+          wf-recorder -g "$area" -r 60 ${encoder} -p b=20M --audio=@DEFAULT_MONITOR@ -f "$file" || true
+          if [ ! -s "$file" ]; then
+            notify-send "Recording" "Nothing was recorded"
+            exit 1
+          fi
+          # a file reference pastes as an upload, like a file copied in a file manager
+          printf 'file://%s\r\n' "''${file// /%20}" | wl-copy --type text/uri-list
+          # notify-send waits for a click and prints the action
+          if [ "$(notify-send -A default=Show "Recording" "Copied and saved ''${file##*/}")" = default ]; then
+            nautilus --select "$file"
+          fi
+        '';
+      };
+
       startup-apps = pkgs.writeShellApplication {
         name = "startup-apps";
         runtimeInputs = with pkgs; [
@@ -108,7 +158,10 @@ in
       ]) (range 1 9);
     in
     {
-      home.packages = [ screenshot-ocr ];
+      home.packages = [
+        screenshot-ocr
+        screenrecord
+      ];
 
       # nwg-displays writes monitor.kdl, niri errors if it did not run yet
       home.activation.niriMonitorKdl = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -230,13 +283,17 @@ in
               hotkey-overlay.title = "Clipboard History: cliphist";
               action = spawn-sh "cliphist list | fuzzel --dmenu | cliphist decode | wl-copy";
             };
-            "Mod+Shift+S" = {
+            "Mod+Print" = {
+              hotkey-overlay.title = "Copy Text From Screen: tesseract";
+              action = spawn "screenshot-ocr";
+            };
+            "Mod+Shift+Print" = {
               hotkey-overlay.title = "Annotate a Screenshot: swappy";
               action = spawn-sh "grim -g \"$(slurp)\" - | swappy -f -";
             };
-            "Mod+Shift+Print" = {
-              hotkey-overlay.title = "Copy Text From Screen: tesseract";
-              action = spawn "screenshot-ocr";
+            "Shift+Print" = {
+              hotkey-overlay.title = "Record an Area: wf-recorder";
+              action = spawn "screenrecord";
             };
             "Mod+P" = {
               hotkey-overlay.title = "Pick a Colour: hyprpicker";

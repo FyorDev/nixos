@@ -36,10 +36,10 @@ def run(*args, timeout=2):
         return ""
 
 
-def sink_monitor():
+def default_sink():
     for line in run("wpctl", "inspect", "@DEFAULT_AUDIO_SINK@").splitlines():
         if "node.name" in line:
-            return line.split("=", 1)[1].strip().strip('"') + ".monitor"
+            return line.split("=", 1)[1].strip().strip('"')
     return None
 
 
@@ -62,12 +62,14 @@ def settle(readings, shown):
     return statistics.median(r for r in readings if abs(r - best) <= TOLERANCE)
 
 
-def record(seconds, source):
+def record(seconds, sink):
     """One chunk of the sink's audio as (wav path, monotonic start time)."""
     path = tmp / f"bar-tempo-{os.getpid()}-{time.monotonic_ns()}.wav"
     started = time.monotonic()
-    # SIGTERM lets pw-record write the wav header sizes on exit
-    run("timeout", "-s", "TERM", str(seconds), "pw-record", "--target", source,
+    # SIGTERM lets pw-record write the wav header sizes on exit. stream.capture.sink records the
+    # sink's output, a "<sink>.monitor" target names no node and lands on the microphone.
+    run("timeout", "-s", "TERM", str(seconds), "pw-record", "--target", sink,
+        "-P", "{ stream.capture.sink = true }",
         "--rate", "44100", "--channels", "1", "--format", "s16", str(path),
         timeout=seconds + 5)
     try:
@@ -138,8 +140,8 @@ def analyse():
     while True:
         with lock:
             playing, current = state["status"] == "Playing", state["track"]
-        source = sink_monitor() if playing else None
-        if source is None:
+        sink = default_sink() if playing else None
+        if sink is None:
             reset()
             track = None
             time.sleep(IDLE)
@@ -148,7 +150,7 @@ def analyse():
             reset()
             track = current
 
-        chunk = record(CHUNK, source)
+        chunk = record(CHUNK, sink)
         if chunk is None:
             time.sleep(1)
             continue

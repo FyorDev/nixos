@@ -96,6 +96,11 @@
                   default = 1;
                   description = "Display scale for the greeter";
                 };
+                recordingDevice = mkOption {
+                  type = types.nullOr types.str;
+                  default = null;
+                  description = "VAAPI render node for screen recordings, NVENC when null";
+                };
                 user = {
                   name = mkOption {
                     type = types.str;
