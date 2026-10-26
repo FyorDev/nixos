@@ -43,6 +43,14 @@
       url = "github:FyorDev/mixxx-flx10?ref=flx10/integration"; # Mixxx with Pioneer DDJ-FLX10 support
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    modularsynth = {
+      url = "git+ssh://git@github.com/FyorDev/ModularSynth.git"; # my modular synth
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        crane.follows = "crane";
+        rust-overlay.follows = "rust-overlay";
+      };
+    };
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
