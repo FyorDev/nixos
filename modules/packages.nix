@@ -62,7 +62,6 @@ let
 
         fuzzel # launcher
         swayidle # lock
-        waybar # top bar
         mako # notifications
         swayosd # volume and brightness popup
         blueman # bluetooth applet

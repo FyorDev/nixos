@@ -7,39 +7,13 @@
 }:
 let
   user = config.user.name;
+  shared = import ../pkgs/quickshell-lib.nix { inherit config lib pkgs; };
   weatherFile = "/var/cache/login-weather/weather.json";
 
   # systemd 261 deprecates niri-session calling import-environment without names
   niriSession = pkgs.writeShellScript "niri-session" ''
     exec ${config.programs.niri.package}/bin/niri-session "$@" 2> >(${pkgs.gnugrep}/bin/grep -v 'import-environment without a list' >&2)
   '';
-
-  cavaConfig = pkgs.writeText "login-cava.conf" (
-    lib.generators.toINI { } {
-      general = {
-        framerate = 60;
-        bars = 40;
-        sensitivity = 150;
-      };
-      input = {
-        method = "pipewire";
-        source = "auto";
-      };
-      output = {
-        method = "raw";
-        raw_target = "/dev/stdout";
-        data_format = "ascii";
-        ascii_max_range = 32;
-        bar_delimiter = 59;
-        channels = "mono";
-        mono_option = "average";
-      };
-      smoothing = {
-        noise_reduction = 0.2;
-        gravity = 180;
-      };
-    }
-  );
 
   settings = {
     inherit user weatherFile;
@@ -61,34 +35,21 @@ let
     cavaCommand = [
       (lib.getExe pkgs.cava)
       "-p"
-      "${cavaConfig}"
+      "${shared.cavaConfig "login-cava.conf" 40}"
     ];
   }
-  //
-    lib.mapAttrs (_: color: color.hex)
-      (lib.importJSON "${config.catppuccin.sources.palette}/palette.json")
-      .${config.catppuccin.flavor}.colors;
+  // shared.palette;
 
-  settingsQml = pkgs.writeText "Settings.qml" ''
-    pragma Singleton
-    import Quickshell
-
-    Singleton {
-    ${
-      lib.concatStrings (
-        lib.mapAttrsToList (
-          name: value: "    readonly property var ${name}: ${builtins.toJSON value}\n"
-        ) settings
-      )
-    }}
-  '';
+  settingsQml = shared.settingsQml settings;
 
   shells = pkgs.runCommand "login-shells" { } ''
     for kind in lock greeter; do
       mkdir -p $out/$kind
-      cp ${../config/quickshell/common}/*.qml ${../config/quickshell}/$kind/shell.qml $out/$kind/
+      cp ${../config/quickshell/common}/*.qml $out/$kind/
       cp ${settingsQml} $out/$kind/Settings.qml
     done
+    cp ${../config/quickshell/lock/shell.qml} $out/lock/shell.qml
+    cp ${../config/quickshell/greeter/shell.qml} $out/greeter/shell.qml
   '';
 
   greeter = pkgs.writeShellScript "login-greeter" ''

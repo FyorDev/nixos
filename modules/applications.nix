@@ -247,7 +247,7 @@ in
         };
 
         # the packages' own autostart entries start a second applet, which can win the race
-        # before waybar's tray is up and then never shows an icon
+        # before the bar's tray is up and then never shows an icon
         xdg.configFile = lib.genAttrs [ "autostart/blueman.desktop" "autostart/nm-applet.desktop" ] (_: {
           text = ''
             [Desktop Entry]
@@ -255,7 +255,7 @@ in
           '';
         });
 
-        # not started at login, the waybar button toggles it
+        # not started at login, the bar button toggles it
         systemd.user.services.lan-mouse = {
           Unit = {
             Description = "Lan Mouse";
