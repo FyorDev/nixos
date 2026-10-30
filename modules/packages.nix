@@ -168,7 +168,6 @@ let
         loupe # gnome image viewer
 
         mpv # video player
-        showtime # gnome video player
 
         decibels # gnome audio player
 

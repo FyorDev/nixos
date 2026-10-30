@@ -16,10 +16,6 @@ let
       file = "imv.desktop";
     }
     {
-      pkg = pkgs.showtime;
-      file = "org.gnome.Showtime.desktop";
-    }
-    {
       pkg = pkgs.decibels;
       file = "org.gnome.Decibels.desktop";
     }
@@ -67,6 +63,12 @@ let
 
   # Extra types not listed in .desktop files
   extras = [
+    {
+      files = [ "mpv.desktop" ];
+      types = lib.filter (lib.hasPrefix "video/") (
+        lib.splitString "\n" (builtins.readFile "${pkgs.shared-mime-info}/share/mime/types")
+      );
+    }
     {
       files = [
         "org.gnome.TextEditor.desktop"
