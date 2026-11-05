@@ -46,7 +46,7 @@
   boot = {
     # TODO: remove when fixed
     # nixpkgs wants a kmodigest certificate next to every module (NixOS/nixpkgs#571181), but
-    # these two copy their .ko by hand and ship none. Drop once they install via modules_install.
+    # this one copies its .ko by hand and ships none. Drop once it installs via modules_install.
     kernelPackages = pkgs.linuxPackages.extend (
       _final: prev:
       let
@@ -64,7 +64,6 @@
       in
       {
         lenovo-legion-module = sign prev.lenovo-legion-module;
-        zenpower = sign prev.zenpower; # from nixos-hardware's common/cpu/amd/zenpower.nix
       }
     );
 
