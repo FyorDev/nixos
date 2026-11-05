@@ -7,7 +7,7 @@ Button {
     property string label: ""
     property string keys: ""
 
-    width: 300
+    width: 340
     padding: 12
 
     Glyph {

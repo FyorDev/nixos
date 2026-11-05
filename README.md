@@ -84,7 +84,8 @@ just release v0.0.0 "title"
 | niri | `Alt+Print` | screenshot window |
 | niri | `Mod+Print` | copy text from screen (OCR) |
 | niri | `Mod+Shift+Print` | annotate a screenshot |
-| niri | `Shift+Print` | record an area with sound, press again to stop and copy it |
+| niri | `Shift+Print` | record an area as an MP4 |
+| niri | `Ctrl+Shift+Print` | record an area as a GIF |
 | niri | `Mod+Ctrl+P` | mirror this display on the other one, press again to stop |
 | niri | `Mod+Return` | Term |
 | niri | `Mod+T` | Term terminal |

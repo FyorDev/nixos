@@ -136,6 +136,14 @@ in
             "-p color_range=tv -p colorspace=bt709 -p color_primaries=bt709"
           ];
 
+      # one palette for the whole clip, and nothing wider than 1280 since gifs balloon at full size
+      gifFilter = lib.concatStrings [
+        "fps=20,"
+        "scale='min(1280,iw)':-1:flags=lanczos,"
+        "split[a][b];[a]palettegen=stats_mode=diff[p];"
+        "[b][p]paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle"
+      ];
+
       screenrecord = pkgs.writeShellApplication {
         name = "screenrecord";
         runtimeInputs = with pkgs; [
@@ -143,6 +151,7 @@ in
           slurp
           procps
           coreutils
+          ffmpeg
           libnotify
           nautilus
           wl-clipboard
@@ -151,18 +160,37 @@ in
           # a second press stops the recording, wf-recorder then finishes the file
           if pkill -INT -x wf-recorder; then exit 0; fi
 
+          format=''${1:-mp4}
           area=$(slurp) || exit 0
           dir=$HOME/Videos/snippets
           mkdir -p "$dir"
-          file="$dir/Screencast from $(date '+%Y-%m-%d %H-%M-%S').mp4"
+          file="$dir/Screencast from $(date '+%Y-%m-%d %H-%M-%S').$format"
+
+          if [ "$format" = gif ]; then
+            # a silent clip in a temp dir, converted once it is finished
+            tmp=$(mktemp -d)
+            trap 'rm -rf "$tmp"' EXIT
+            video=$tmp/recording.mp4
+            audio=()
+          else
+            video=$file
+            audio=(--audio=@DEFAULT_MONITOR@)
+          fi
 
           notify-send "Recording" "Press the same key to stop"
           # without a fixed rate the encoder budgets the bitrate for 90000 fps, the file timebase,
           # and every frame comes out at the worst quality
-          wf-recorder -g "$area" -r 60 ${encoder} -p b=20M --audio=@DEFAULT_MONITOR@ -f "$file" || true
-          if [ ! -s "$file" ]; then
+          wf-recorder -g "$area" -r 60 ${encoder} -p b=20M "''${audio[@]}" -f "$video" || true
+          if [ ! -s "$video" ]; then
             notify-send "Recording" "Nothing was recorded"
             exit 1
+          fi
+          if [ "$format" = gif ]; then
+            notify-send "Recording" "Converting to a GIF"
+            if ! ffmpeg -v error -nostdin -i "$video" -vf "${gifFilter}" -loop 0 "$file"; then
+              notify-send "Recording" "Could not convert to a GIF"
+              exit 1
+            fi
           fi
           # a file reference pastes as an upload, like a file copied in a file manager
           printf 'file://%s\r\n' "''${file// /%20}" | wl-copy --type text/uri-list
@@ -333,8 +361,12 @@ in
               action = spawn "screenshot-annotate";
             };
             "Shift+Print" = {
-              hotkey-overlay.title = "Record an Area: wf-recorder";
+              hotkey-overlay.title = "Record an Area as MP4: wf-recorder";
               action = spawn "screenrecord";
+            };
+            "Ctrl+Shift+Print" = {
+              hotkey-overlay.title = "Record an Area as GIF: wf-recorder";
+              action = spawn "screenrecord" "gif";
             };
             "Mod+Ctrl+P" = {
               hotkey-overlay.title = "Mirror the Display: wl-mirror";

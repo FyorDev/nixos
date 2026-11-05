@@ -68,9 +68,17 @@ Card {
         MenuEntry {
             visible: !Capture.recording
             code: 0xF03D
-            label: "Record an area"
+            label: "Record an area (mp4)"
             keys: "Shift+Print"
             onClicked: root.run(["screenrecord"])
+        }
+
+        MenuEntry {
+            visible: !Capture.recording
+            code: 0xF03E
+            label: "Record an area (gif)"
+            keys: "Ctrl+Shift+Print"
+            onClicked: root.run(["screenrecord", "gif"])
         }
 
         Separator {}
@@ -123,7 +131,7 @@ Card {
     }
 
     component Separator: Item {
-        width: 300
+        width: 340
         height: 9
 
         Rectangle {
