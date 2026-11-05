@@ -334,9 +334,7 @@ let
       name = "Util";
       icon = "f0214";
       packages = [
-        # TODO: remove when fixed
-        # Electron 43.8 leaves Obsidian's window empty (NixOS/nixpkgs#578970)
-        (obsidian.override { electron = electron_42; })
+        obsidian
         keepassxc
         syncthing
         lan-mouse # share mouse and keyboard between machines
