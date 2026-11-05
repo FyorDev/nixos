@@ -216,14 +216,6 @@ in
               "--enable-script"
             ];
           };
-          ghidra.command = toString (
-            pkgs.writeShellScript "reva-mcp" ''
-              export JAVA_HOME=${pkgs.jdk21}
-              export GHIDRA_INSTALL_DIR=${pkgs.ghidra}/lib/ghidra
-              export NIX_GHIDRAHOME=${pkgs.ghidra.withExtensions (e: [ e.reva ])}/lib/ghidra/Ghidra
-              exec ${mcpPkgs.mcp-reva}/bin/mcp-reva "$@"
-            ''
-          );
           inkscape.command = "${mcps.inkscape}/bin/inkscape-mcp";
           krita.command = "${mcps.krita}/bin/krita-mcp";
           wireshark.command = "${mcps.wireshark}/bin/wireshark-mcp";
