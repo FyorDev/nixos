@@ -49,6 +49,7 @@ just switch
 ```
 
 Add `background.png` or `background.jpg` to the root and rebuild.
+Add `kritadefault.kra` to add a default canvas.
 
 ## Secrets
 

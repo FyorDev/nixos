@@ -8,6 +8,9 @@
   ...
 }:
 let
+  # gitignored, optional
+  kritaTemplate = lib.findFirst builtins.pathExists null [ ../kritadefault.kra ];
+
   vscodeSettings = pkgs.writeText "vscode-settings.json" (
     builtins.toJSON (
       catppuccinVscodeSettings
@@ -125,6 +128,19 @@ in
               ${pkgs.jq}/bin/jq '.preferences.menuBarEnabled = false' "$claude" > "$tmp" && run mv "$tmp" "$claude"
             fi
           '';
+
+          kritaTemplate = lib.mkIf (kritaTemplate != null) (
+            lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+              kritarc="$HOME/.config/kritarc"
+              run touch "$kritarc"
+              run sed -i '/^AlwaysUseTemplate=/d' "$kritarc"
+              if grep -qx '\[TemplateChooserDialog\]' "$kritarc"; then
+                run sed -i '/^\[TemplateChooserDialog\]$/a AlwaysUseTemplate=${kritaTemplate}' "$kritarc"
+              else
+                run printf '\n[TemplateChooserDialog]\nAlwaysUseTemplate=%s\n' ${kritaTemplate} >> "$kritarc"
+              fi
+            ''
+          );
 
           vscodeSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
             settings="$HOME/.config/Code/User/settings.json"
@@ -254,6 +270,9 @@ in
             Hidden=true
           '';
         });
+
+        # brush presets tagged 0MINE, with the brush tips they use
+        xdg.dataFile."krita/bundles/0MINE.bundle".source = ../config/krita/0MINE.bundle;
 
         # not started at login, the bar button toggles it
         systemd.user.services.lan-mouse = {
