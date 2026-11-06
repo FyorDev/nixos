@@ -123,6 +123,9 @@
     udev.packages = [
       pkgs.platformio-core.udev # non-root usb with dialout
       pkgs.brightnessctl # brightness settings with video
+      (pkgs.writeTextDir "lib/udev/rules.d/70-tabletdriver.rules" ''
+        SUBSYSTEM=="usb", ATTR{idVendor}=="28bd", ATTR{idProduct}=="091b", TAG+="uaccess"
+      '') # xp-pen artist 22r pro usb access
     ];
     fwupd.enable = true; # firmware updates
     gvfs.enable = true; # nautilus virtual fs for trash, mtp and network
@@ -271,6 +274,7 @@
   hardware = {
     bluetooth.enable = true;
     keyboard.qmk.enable = true; # udev rules for flashing qmk keyboards
+    uinput.enable = true; # virtual input devices for tabletdriver
     ddj-flx10.enable = true; # Mixxx fork, udev rules, settings/unlock on plug-in
     # give Mixxx controller mappings absolute path
     ddj-flx10.package =
