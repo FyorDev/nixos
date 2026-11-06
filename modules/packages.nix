@@ -247,7 +247,6 @@ let
         darktable
         pureref
         goxel
-        config.programs.xppen.package # XP Pen Artist 22R Pro
       ];
     }
     {

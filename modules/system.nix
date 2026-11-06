@@ -182,7 +182,6 @@
     };
     dconf.enable = true; # settings backend for GTK apps
     virt-manager.enable = true;
-    xppen.enable = true; # xp-pen tablet driver
     wireshark = {
       enable = true;
       package = pkgs.wireshark;
@@ -289,11 +288,8 @@
       };
   };
 
-  # copied if it doesn't exist
   systemd.tmpfiles.rules = [
     "d /home/${config.user.name}/source 0755 ${config.user.name} users -"
-    "C /var/lib/pentablet/conf/xppen/config.xml - - - - ${../config/xppen/config.xml}"
-    "z /var/lib/pentablet/conf/xppen/config.xml 0666 - - -"
   ];
 
   virtualisation.libvirtd.enable = true;
